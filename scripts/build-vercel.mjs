@@ -3,6 +3,7 @@ import { minify } from 'html-minifier-terser';
 import JavaScriptObfuscator from 'javascript-obfuscator';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const ROOT = process.cwd();
 const DIST = path.join(ROOT, 'dist');
@@ -54,13 +55,23 @@ async function buildJsBundle() {
     }).getObfuscatedCode();
     await fs.writeFile(outFile, obfuscated, 'utf8');
   }
+
+  const finalJs = await fs.readFile(outFile);
+  const hash = crypto.createHash('sha256').update(finalJs).digest('hex').slice(0, 10);
+  const hashedName = `app.bundle.${hash}.js`;
+  const hashedPath = path.join(DIST, 'js', hashedName);
+  await fs.rename(outFile, hashedPath);
+  return `js/${hashedName}`;
 }
 
-async function buildHtml() {
+async function buildHtml(bundlePath) {
   const input = path.join(ROOT, 'index.html');
   let html = await fs.readFile(input, 'utf8');
 
-  html = html.replace(/<script\s+type="module"\s+src="js\/app\.js"><\/script>/i, '<script type="module" src="js/app.bundle.js"></script>');
+  html = html.replace(
+    /<script\s+type="module"\s+src="js\/app\.js"><\/script>/i,
+    `<script type="module" src="${bundlePath}"></script>`
+  );
 
   const minified = await minify(html, {
     collapseWhitespace: true,
@@ -74,8 +85,8 @@ async function buildHtml() {
 
 async function main() {
   await cleanDist();
-  await buildJsBundle();
-  await buildHtml();
+  const bundlePath = await buildJsBundle();
+  await buildHtml(bundlePath);
 
   await copyIfExists('css');
   await copyIfExists('assets');
