@@ -1,0 +1,25 @@
+index.html/style.css --- Design
+app.js --- Full tool brain
+
+
+history-manager.js - Function
+Metadata-adj.js - metadata adjustment Function
+Model-Temperature.js - model tempreture Function
+seo-optimizer.js - Function
+
+
+TagInput Folder/"Keyword" - tag-input.js/tag-input.css --- Main function is-"general.js" (karon eikhan a tag input er instruction prompt likha achea)
+
+
+Custome prompt folder - custom-prompt-manager.js (structure/design-only) - eitar mul function is  "metadata-engine.js" (karon eikhan a tag input er instruction prompt eitar vitor likha achea)
+
+
+All marketplace.js er main function "general.js" ---- karon general.js ei file titea full meatadatar main instruction prompt add kora achea 
+
+
+--------------------------------------------------------------------------------------------------------------(THE END)-----------------------------------------------------------------------------------------------
+
+
+
+
+mone rakhar zonno - tempreture and max token(1x, 2x, 3x, 4x) ei ta api js er vitorea add achea code er 1st a check dilaie vuza zabea 
