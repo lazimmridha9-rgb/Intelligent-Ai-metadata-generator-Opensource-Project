@@ -662,14 +662,14 @@ function updateBatchUI() {
                     <p class="batch-file-name" title="${safeName}">${safeName}</p>
                     <div class="batch-file-meta">
                         <span class="batch-file-ext">${extension}</span>
-                        <span>${fileSizeText}</span>
+                        <span class="batch-file-size">${fileSizeText}</span>
                     </div>
                 </div>
             </div>
             <div class="batch-item-actions">
                 <span class="batch-status batch-status--${item.status}">
                     ${statusIcon}
-                    <span>${statusLabel}</span>
+                    <span class="status-label">${statusLabel}</span>
                 </span>
                 <button class="batch-remove-btn" onclick="removeFromBatch(${index}, event)" ${isProcessingBatch ? 'disabled' : ''} title="Remove file">
                     <i class="fa-solid fa-xmark"></i>

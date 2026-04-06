@@ -74,11 +74,22 @@ h6 {
     animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Tag Styles */
+/* Tag Styles Redesign */
 .seo-tag {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #94a3b8;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
 }
 
 .seo-tag::after {
@@ -88,9 +99,9 @@ h6 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
     transform: translateX(-100%);
-    transition: 0.5s;
+    transition: 0.6s;
 }
 
 .seo-tag:hover::after {
@@ -99,8 +110,94 @@ h6 {
 
 .seo-tag:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border-color: rgba(96, 165, 250, 0.5);
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(96, 165, 250, 0.3);
+    color: #ffffff;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+}
+
+/* Results Content Redesign */
+#resultsContent .group {
+    background: rgba(15, 23, 42, 0.2);
+    padding: 24px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    transition: all 0.4s ease;
+}
+
+#resultsContent .group:hover {
+    background: rgba(15, 23, 42, 0.3);
+    border-color: rgba(96, 165, 250, 0.1);
+}
+
+[contenteditable="true"] {
+    background: rgba(2, 6, 23, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    border-radius: 16px !important;
+    padding: 18px !important;
+    color: #e2e8f0 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.6 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+[contenteditable="true"]:focus {
+    background: rgba(2, 6, 23, 0.6) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 20px rgba(59, 130, 246, 0.05) !important;
+    outline: none;
+}
+
+/* Tabs & Toolbar Refinement */
+.output-toolbar {
+    background: rgba(15, 23, 42, 0.8) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    padding: 16px 24px !important;
+}
+
+.tab-btn {
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    padding: 12px 4px !important;
+    transition: all 0.3s ease !important;
+}
+
+.tab-btn i {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.tab-btn.active {
+    color: #60a5fa !important;
+}
+
+.tab-indicator {
+    height: 3px !important;
+    border-radius: 3px 3px 0 0 !important;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6) !important;
+}
+
+.output-action-btn {
+    border-radius: 12px !important;
+    padding: 8px 16px !important;
+    background: rgba(30, 41, 59, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    transition: all 0.3s ease !important;
+}
+
+.output-action-btn:hover:not(:disabled) {
+    background: rgba(51, 65, 85, 0.8) !important;
+    border-color: rgba(96, 165, 250, 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.output-action-btn i {
+    opacity: 0.9;
 }
 
 /* Loading Shimmer */
@@ -364,52 +461,73 @@ h6 {
     }
 }
 
-/* Batch Queue UI */
+/* Batch Queue UI Redesign */
 .batch-list-panel {
     scrollbar-gutter: stable;
+    padding-right: 4px;
 }
 
 .batch-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    background: linear-gradient(90deg, rgba(15, 23, 42, 0.86), rgba(2, 6, 23, 0.74));
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    gap: 16px;
+    padding: 14px 20px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: rgba(15, 23, 42, 0.35);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+
+.batch-item:last-child {
+    margin-bottom: 0;
 }
 
 .batch-item:hover {
-    border-color: rgba(96, 165, 250, 0.46);
-    background: linear-gradient(90deg, rgba(17, 27, 48, 0.93), rgba(3, 10, 26, 0.84));
-    transform: translateY(-1px);
+    border-color: rgba(96, 165, 250, 0.15);
+    background: rgba(15, 23, 42, 0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.5);
 }
 
 .batch-item.is-done {
-    border-color: rgba(34, 197, 94, 0.4);
-    background: linear-gradient(90deg, rgba(6, 78, 59, 0.2), rgba(2, 44, 34, 0.12));
+    border-color: rgba(34, 197, 94, 0.15);
+    background: rgba(6, 78, 59, 0.08);
+}
+
+.batch-item.is-processing {
+    border-color: rgba(96, 165, 250, 0.25);
+    background: rgba(30, 58, 138, 0.12);
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.08);
 }
 
 .batch-item-main {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
     min-width: 0;
     flex: 1;
 }
 
 .batch-thumb {
-    width: 38px;
-    height: 38px;
-    border-radius: 9px;
-    background-color: rgba(30, 41, 59, 0.92);
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background-color: #020617;
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     flex-shrink: 0;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.batch-item:hover .batch-thumb {
+    transform: scale(1.05);
 }
 
 .batch-item-copy {
@@ -419,100 +537,126 @@ h6 {
 
 .batch-file-name {
     margin: 0;
-    color: #e2e8f0;
-    font-size: 0.76rem;
+    color: #ffffff;
+    font-size: 0.875rem;
     font-weight: 600;
-    line-height: 1.25;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    white-space: nowrap;
     overflow: hidden;
-    overflow-wrap: anywhere;
+    text-overflow: ellipsis;
+    letter-spacing: -0.01em;
 }
 
 .batch-file-meta {
-    margin-top: 3px;
+    margin-top: 6px;
     display: flex;
     align-items: center;
-    gap: 7px;
-    font-size: 0.62rem;
-    color: #94a3b8;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
+    gap: 12px;
 }
 
 .batch-file-ext {
-    padding: 2px 5px;
-    border-radius: 999px;
-    color: #bfdbfe;
-    background: rgba(37, 99, 235, 0.2);
-    border: 1px solid rgba(96, 165, 250, 0.34);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 8px;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.05);
+}
+
+.batch-file-size {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .batch-item-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
 .batch-status {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    min-height: 24px;
-    padding: 4px 8px;
+    gap: 8px;
+    padding: 6px 14px;
     border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.32);
-    color: #cbd5e1;
-    background: rgba(15, 23, 42, 0.72);
-    font-size: 0.62rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    background: rgba(15, 23, 42, 0.6);
+    font-size: 0.675rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.batch-status i {
+    font-size: 0.75rem;
+}
+
+.status-label {
+    display: inline-block;
+}
+
+.batch-status--pending {
+    color: #94a3b8;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(30, 41, 59, 0.4);
 }
 
 .batch-status--processing {
-    color: #93c5fd;
-    border-color: rgba(59, 130, 246, 0.4);
-    background: rgba(30, 58, 138, 0.28);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.25);
+    background: rgba(56, 189, 248, 0.08);
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.08);
 }
 
 .batch-status--done {
-    color: #86efac;
-    border-color: rgba(34, 197, 94, 0.45);
-    background: rgba(20, 83, 45, 0.32);
+    color: #4ade80;
+    border-color: rgba(34, 197, 94, 0.25);
+    background: rgba(34, 197, 94, 0.08);
 }
 
 .batch-status--error {
-    color: #fca5a5;
-    border-color: rgba(248, 113, 113, 0.45);
-    background: rgba(127, 29, 29, 0.26);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.25);
+    background: rgba(239, 68, 68, 0.08);
 }
 
 .batch-remove-btn {
-    width: 26px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    border: 1px solid rgba(148, 163, 184, 0.28);
-    color: #94a3b8;
-    background: rgba(15, 23, 42, 0.58);
-    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #64748b;
+    background: rgba(30, 41, 59, 0.6);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.8rem;
 }
 
 .batch-remove-btn:hover {
-    color: #fca5a5;
-    border-color: rgba(248, 113, 113, 0.5);
-    background: rgba(127, 29, 29, 0.24);
+    color: #ffffff;
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(239, 68, 68, 0.3);
+    transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
 }
 
 .batch-remove-btn:disabled {
-    opacity: 0.45;
+    opacity: 0.2;
     cursor: not-allowed;
+    transform: none;
 }
 
 @media (max-width: 640px) {

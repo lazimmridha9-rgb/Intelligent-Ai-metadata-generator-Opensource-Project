@@ -79,14 +79,51 @@ async function buildJsBundle() {
   return hashedFileName;
 }
 
-async function buildHtml(bundleFileName) {
+async function buildCss() {
+  const cssDir = path.join(DIST, 'css');
+  await fs.mkdir(cssDir, { recursive: true });
+
+  const srcCssDir = path.join(SRC, 'css');
+  const files = await fs.readdir(srcCssDir);
+  const cssFiles = files.filter(f => f.endsWith('.css'));
+  
+  const hashedFiles = {};
+
+  for (const fileName of cssFiles) {
+    const srcPath = path.join(srcCssDir, fileName);
+    try {
+      const content = await fs.readFile(srcPath, 'utf8');
+      const hash = crypto.createHash('sha256').update(content).digest('hex').slice(0, 10);
+      const hashedFileName = fileName.replace('.css', `.${hash}.css`);
+      await fs.writeFile(path.join(cssDir, hashedFileName), content, 'utf8');
+      hashedFiles[fileName] = hashedFileName;
+    } catch (e) {
+      console.warn(`[Build] Warning: Could not build CSS file: ${fileName}`);
+    }
+  }
+  return hashedFiles;
+}
+
+async function buildHtml(bundleFileName, hashedCssFiles) {
   const input = path.join(SRC, 'index.html');
   let html = await fs.readFile(input, 'utf8');
 
+  // Replace JS (Main bundle)
   html = html.replace(
     /<script\s+type="module"\s+src="js\/app\.js"><\/script>/i,
     `<script type="module" src="js/${bundleFileName}"></script>`
   );
+
+  // Replace CSS with Hashed versions
+  for (const [original, hashed] of Object.entries(hashedCssFiles)) {
+    // Escape dots for regex
+    const escapedOriginal = original.replace(/\./g, '\\.');
+    const regex = new RegExp(`href="css/${escapedOriginal}"`, 'gi');
+    html = html.replace(regex, `href="css/${hashed}"`);
+  }
+
+  // Handle any other CSS links that might be in other directories (like tag-input)
+  // For simplicity, we copy those as-is for now, but ensure no hardcoded paths break.
 
   const minified = await minify(html, {
     collapseWhitespace: true,
@@ -101,9 +138,10 @@ async function buildHtml(bundleFileName) {
 async function main() {
   await cleanDist();
   const bundleFileName = await buildJsBundle();
-  await buildHtml(bundleFileName);
+  const hashedCssFiles = await buildCss();
+  await buildHtml(bundleFileName, hashedCssFiles);
 
-  await copyIfExists('css');
+  // Copy other folders (not individual files in css as they are already handled)
   await copyIfExists('assets');
   await copyIfExists('Icon');
   await copyIfExists('tag-input');
