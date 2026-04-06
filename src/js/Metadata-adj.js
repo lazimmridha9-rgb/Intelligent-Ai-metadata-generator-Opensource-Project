@@ -69,7 +69,7 @@ export class MetadataAdj {
                         <span id="titleLenDisplay" class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">${this.settings.titleLength} chars</span>
                     </div>
                     <input type="range" id="titleLenSlider" min="30" max="200" step="5" value="${this.settings.titleLength}" 
-                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
+                        class="ui-range w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
                     <div class="flex justify-between text-[9px] text-slate-600 mt-1">
                         <span>Short (30)</span>
                         <span>Long (200)</span>
@@ -83,7 +83,7 @@ export class MetadataAdj {
                         <span id="descLenDisplay" class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">${this.settings.descLength} chars</span>
                     </div>
                     <input type="range" id="descLenSlider" min="100" max="500" step="10" value="${this.settings.descLength}" 
-                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
+                        class="ui-range w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
                     <div class="flex justify-between text-[9px] text-slate-600 mt-1">
                         <span>Concise (100)</span>
                         <span>Detailed (500)</span>
@@ -97,7 +97,7 @@ export class MetadataAdj {
                         <span id="kwCountDisplay" class="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">${this.settings.keywordsCount} tags</span>
                     </div>
                     <input type="range" id="kwCountSlider" min="10" max="100" step="1" value="${this.settings.keywordsCount}" 
-                        class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
+                        class="ui-range w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
                     <div class="flex justify-between text-[9px] text-slate-600 mt-1">
                         <span>Min (10)</span>
                         <span>Max (100)</span>

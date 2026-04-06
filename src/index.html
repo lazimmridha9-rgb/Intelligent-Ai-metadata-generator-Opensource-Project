@@ -6,36 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Image Metadata Generator (2026 Advanced)</title>
     <link rel="icon" type="image/jpeg" href="Icon/logo-ico.jpg">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/tailwind.generated.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="tag-input/tag-input.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Outfit', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: '#60a5fa',
-                        secondary: '#94a3b8',
-                        accent: '#a78bfa',
-                        dark: {
-                            900: '#0f172a',
-                            800: '#1e293b',
-                            700: '#334155',
-                            950: '#020617'
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    }
-                }
-            }
-        }
-    </script>
 </head>
 
 <body class="text-slate-300 min-h-screen flex flex-col selection:bg-primary/30 selection:text-white overflow-x-hidden">
@@ -269,7 +243,7 @@
 
                         <div class="relative group">
                             <input type="range" id="tempSlider" min="0.0" max="1.0" step="0.1" value="0.4"
-                                class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
+                                class="ui-range w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-primary hover:accent-blue-400 transition-all">
 
                             <!-- Range Markers -->
                             <div class="flex justify-between text-[10px] text-slate-500 mt-1 font-medium px-1">
