@@ -3,15 +3,15 @@ import {
     parseJsonFromModelText,
     parseGeminiResponse,
     parseOpenAICompatibleResponse
-} from '../js/utils/json-response-parser.js';
-import { MetadataEngine } from '../js/metadata-engine.js';
+} from '../src/js/utils/json-response-parser.js';
+import { MetadataEngine } from '../src/js/metadata-engine.js';
 import {
     getStoredProvider,
     setStoredProvider,
     loadProviderState,
     saveProviderApiKey,
     saveProviderModel
-} from '../js/providers/provider-registry.js';
+} from '../src/js/providers/provider-registry.js';
 
 class MemoryStorage {
     constructor() {
