@@ -1,6 +1,8 @@
+import { storageGetItem, storageRemoveItem, storageSetItem } from './utils/safe-storage.js';
+
 export class HistoryManager {
     constructor(callbacks) {
-        this.history = JSON.parse(localStorage.getItem('gemini_history') || '[]');
+        this.history = JSON.parse(storageGetItem('gemini_history') || '[]');
         if (!Array.isArray(this.history)) {
             this.history = [];
         }
@@ -36,7 +38,7 @@ export class HistoryManager {
     _save() {
         const trySave = (items) => {
             try {
-                localStorage.setItem('gemini_history', JSON.stringify(items));
+                storageSetItem('gemini_history', JSON.stringify(items));
                 return true;
             } catch (e) {
                 return false;
@@ -58,7 +60,7 @@ export class HistoryManager {
         // Final fallback: keep a single minimal metadata-only entry in memory.
         this.history = this.history[0] ? [this.history[0]] : [];
         try {
-            localStorage.setItem('gemini_history', JSON.stringify(this.history));
+            storageSetItem('gemini_history', JSON.stringify(this.history));
         } catch (e) {
             console.warn('History persistence unavailable due to storage limits.');
         }
@@ -149,7 +151,7 @@ export class HistoryManager {
     clear() {
         if (confirm('Are you sure you want to clear your history?')) {
             this.history = [];
-            localStorage.removeItem('gemini_history');
+            storageRemoveItem('gemini_history');
             this.render();
             return true;
         }

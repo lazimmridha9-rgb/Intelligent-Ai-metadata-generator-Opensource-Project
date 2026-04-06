@@ -5,6 +5,7 @@
  */
 
 import { getSpeedConfig } from './speed-config.js';
+import { storageGetItem, storageSetItem } from '../utils/safe-storage.js';
 
 export class SpeedControl {
     constructor() {
@@ -201,7 +202,7 @@ export class SpeedControl {
      * @returns {string} Saved speed or default
      */
     loadSpeed() {
-        const saved = localStorage.getItem('generation_speed');
+        const saved = storageGetItem('generation_speed');
         return saved && ['1x', '2x', '3x', '4x'].includes(saved) ? saved : this.defaultSpeed;
     }
 
@@ -209,6 +210,6 @@ export class SpeedControl {
      * Save speed to localStorage
      */
     saveSpeed() {
-        localStorage.setItem('generation_speed', this.currentSpeed);
+        storageSetItem('generation_speed', this.currentSpeed);
     }
 }

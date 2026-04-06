@@ -3,6 +3,8 @@
  * Metadata Adjustment Controls
  * Handles the logic for adjustable Title Length, Description Length, and Keywords Count.
  */
+import { storageGetItem, storageSetItem } from './utils/safe-storage.js';
+
 export class MetadataAdj {
     constructor() {
         // Default Values
@@ -173,7 +175,7 @@ export class MetadataAdj {
      * Loads settings from localStorage or returns defaults
      */
     loadSettings() {
-        const saved = localStorage.getItem('metadata_adj_settings');
+        const saved = storageGetItem('metadata_adj_settings');
         if (saved) {
             try {
                 return { ...this.defaults, ...JSON.parse(saved) };
@@ -189,7 +191,7 @@ export class MetadataAdj {
      * Saves current settings to localStorage
      */
     saveSettings() {
-        localStorage.setItem('metadata_adj_settings', JSON.stringify(this.settings));
+        storageSetItem('metadata_adj_settings', JSON.stringify(this.settings));
     }
 
     /**

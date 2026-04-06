@@ -13,6 +13,7 @@ import { showToast, showErrorModal } from './ui/feedback-ui.js';
 import { updateCharCount, updateCount } from './ui/count-utils.js';
 import { renderAdvancedTechnical } from './technical/advanced-technical.js';
 import { EmbeddedDownloadManager } from './export/embedded-download-manager.js';
+import { storageGetItem, storageSetItem } from './utils/safe-storage.js';
 import {
     getStoredProvider,
     setStoredProvider,
@@ -59,7 +60,7 @@ let batchQueue = [];
 let isProcessingBatch = false;
 let activeBatchMode = 'pending';
 const DEBUG_MODE =
-    localStorage.getItem('metadata_debug_mode') === '1' ||
+    storageGetItem('metadata_debug_mode') === '1' ||
     new URLSearchParams(window.location.search).get('debug') === '1';
 
 function debugLog(...args) {
@@ -131,7 +132,7 @@ function init() {
     });
 
     // Restore Marketplace Selection
-    const savedMarket = localStorage.getItem('marketplace_selection') || 'general';
+    const savedMarket = storageGetItem('marketplace_selection') || 'general';
     updateMarketplaceSelection(savedMarket);
 }
 
@@ -158,7 +159,7 @@ function updateMarketplaceSelection(market) {
     }
 
     // Persist
-    localStorage.setItem('marketplace_selection', market);
+    storageSetItem('marketplace_selection', market);
 }
 
 function loadProviderSettings() {

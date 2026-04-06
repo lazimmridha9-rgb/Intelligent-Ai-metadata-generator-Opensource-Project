@@ -1,3 +1,5 @@
+import { storageGetItem, storageSetItem } from '../utils/safe-storage.js';
+
 export class CustomPromptManager {
     constructor(containerId) {
         this.containerId = containerId;
@@ -141,7 +143,7 @@ export class CustomPromptManager {
     }
 
     loadSettings() {
-        const saved = localStorage.getItem(this.storageKey);
+        const saved = storageGetItem(this.storageKey);
         if (saved) {
             this.currentPrompt = saved;
             this.inputElement.value = saved;
@@ -152,7 +154,7 @@ export class CustomPromptManager {
 
     saveSettings() {
         this.currentPrompt = this.inputElement.value;
-        localStorage.setItem(this.storageKey, this.currentPrompt);
+        storageSetItem(this.storageKey, this.currentPrompt);
         this.showStatus('Saved', 'text-green-400');
         this.updateActiveIndicator();
         setTimeout(() => this.showStatus('Saved', 'text-slate-500'), 2000);

@@ -2,6 +2,8 @@
  * Model Temperature Control Module
  * Handles the logic for the temperature slider and persistence.
  */
+import { storageGetItem, storageSetItem } from './utils/safe-storage.js';
+
 export class ModelTemperature {
     constructor() {
         this.defaultTemperature = 0.4;
@@ -58,12 +60,12 @@ export class ModelTemperature {
     }
 
     loadTemperature() {
-        const saved = localStorage.getItem('model_temperature');
+        const saved = storageGetItem('model_temperature');
         return saved ? parseFloat(saved) : this.defaultTemperature;
     }
 
     saveTemperature() {
-        localStorage.setItem('model_temperature', this.currentTemperature);
+        storageSetItem('model_temperature', this.currentTemperature);
     }
 
     getTemperature() {
