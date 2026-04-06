@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm run build:secure",
+  "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "cleanUrls": true,
   "headers": [
