@@ -139,24 +139,25 @@ This project is now prepared for direct static hosting (no backend build step).
 3. Confirm browser localStorage is available (API keys are stored client-side in the user browser).
 4. If debugging is needed in production, open URL with `?debug=1` or set `localStorage.metadata_debug_mode = '1'`.
 
-## Vercel Production (Secure Build)
+## Vercel Production (Stable Build)
 
 This repo now includes a production build pipeline for Vercel:
 - Bundles all JS into a single minimized file (`dist/js/app.bundle.js`)
 - Minifies HTML for production output
-- Optional obfuscation is enabled by default in Vercel config (`npm run build:secure`)
+- Stable deployment uses `npm run build` (same output as `build:secure`).
+- Optional obfuscation is available manually with `npm run build:obfuscate` (not recommended for default deploy).
 
 ### Deploy steps (Vercel)
 1. Push this project to GitHub.
 2. Import the repo in Vercel.
 3. Keep default framework as **Other**.
-4. Build command: `npm run build:secure`
+4. Build command: `npm run build`
 5. Output directory: `dist`
 6. Deploy.
 
 ### Important security note
 Client-side web apps cannot be made 100% hidden. Browser users can always view delivered frontend code.
-This setup makes reverse-engineering harder (minified/obfuscated), but true secret protection requires moving sensitive logic to a backend API.
+Minification is enabled by default. If you choose obfuscation, test thoroughly before production. True secret protection still requires moving sensitive logic to a backend API.
 
 ## Contributing
 

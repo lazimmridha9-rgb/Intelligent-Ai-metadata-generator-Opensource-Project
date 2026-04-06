@@ -3,6 +3,7 @@ import { minify } from 'html-minifier-terser';
 import JavaScriptObfuscator from 'javascript-obfuscator';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import crypto from 'node:crypto';
 
 const ROOT = process.cwd();
 const SRC = path.join(ROOT, 'src');
@@ -39,8 +40,9 @@ async function copyFromRootIfExists(srcRel, destRel = srcRel) {
 }
 
 async function buildJsBundle() {
-  const outFile = path.join(DIST, 'js', 'app.bundle.js');
-  await fs.mkdir(path.dirname(outFile), { recursive: true });
+  const jsDir = path.join(DIST, 'js');
+  const tempOutFile = path.join(jsDir, 'app.bundle.js');
+  await fs.mkdir(jsDir, { recursive: true });
 
   await esbuild({
     entryPoints: [path.join(SRC, 'js', 'app.js')],
@@ -50,11 +52,11 @@ async function buildJsBundle() {
     sourcemap: false,
     legalComments: 'none',
     target: ['es2020'],
-    outfile: outFile
+    outfile: tempOutFile
   });
 
   if (OBFUSCATE) {
-    const js = await fs.readFile(outFile, 'utf8');
+    const js = await fs.readFile(tempOutFile, 'utf8');
     const obfuscated = JavaScriptObfuscator.obfuscate(js, {
       compact: true,
       controlFlowFlattening: false,
@@ -65,15 +67,26 @@ async function buildJsBundle() {
       splitStrings: true,
       splitStringsChunkLength: 8
     }).getObfuscatedCode();
-    await fs.writeFile(outFile, obfuscated, 'utf8');
+    await fs.writeFile(tempOutFile, obfuscated, 'utf8');
   }
+
+  const finalJs = await fs.readFile(tempOutFile, 'utf8');
+  const hash = crypto.createHash('sha256').update(finalJs).digest('hex').slice(0, 10);
+  const hashedFileName = `app.bundle.${hash}.js`;
+  const hashedOutFile = path.join(jsDir, hashedFileName);
+  await fs.rename(tempOutFile, hashedOutFile);
+
+  return hashedFileName;
 }
 
-async function buildHtml() {
+async function buildHtml(bundleFileName) {
   const input = path.join(SRC, 'index.html');
   let html = await fs.readFile(input, 'utf8');
 
-  html = html.replace(/<script\s+type="module"\s+src="js\/app\.js"><\/script>/i, '<script type="module" src="js/app.bundle.js"></script>');
+  html = html.replace(
+    /<script\s+type="module"\s+src="js\/app\.js"><\/script>/i,
+    `<script type="module" src="js/${bundleFileName}"></script>`
+  );
 
   const minified = await minify(html, {
     collapseWhitespace: true,
@@ -87,8 +100,8 @@ async function buildHtml() {
 
 async function main() {
   await cleanDist();
-  await buildJsBundle();
-  await buildHtml();
+  const bundleFileName = await buildJsBundle();
+  await buildHtml(bundleFileName);
 
   await copyIfExists('css');
   await copyIfExists('assets');

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-vercel.mjs",
-    "build:secure": "node scripts/build-vercel.mjs --obfuscate",
+    "build:secure": "node scripts/build-vercel.mjs",
+    "build:obfuscate": "node scripts/build-vercel.mjs --obfuscate",
     "verify": "node scripts/verify-metadata-tool.mjs"
   },
   "devDependencies": {
