@@ -22,7 +22,7 @@ if errorlevel 1 (
 where npm >nul 2>nul
 if errorlevel 1 (
   echo [ERROR] npm not found.
-  echo Please reinstall Node.js (npm comes with Node.js).
+  echo Please reinstall Node.js ^(npm comes with Node.js^).
   echo.
   pause
   exit /b 1
@@ -55,6 +55,12 @@ echo.
 echo Server URL: http://localhost:4173
 echo Press Ctrl+C to stop the server.
 echo.
-call npx --yes http-server dist -p 4173 -c-1 -o
+call node scripts/local-host-server.mjs dist 4173
+if errorlevel 1 (
+  echo.
+  echo [ERROR] Local host server failed to start.
+  pause
+  exit /b 1
+)
 
 endlocal
