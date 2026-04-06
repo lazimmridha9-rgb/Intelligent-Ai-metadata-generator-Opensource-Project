@@ -1,4 +1,4 @@
-import JSZip from 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm';
+import JSZip from 'jszip';
 import { embedMetadataIntoFile } from './metadata-embedder.js';
 
 function triggerBlobDownload(blob, fileName) {
