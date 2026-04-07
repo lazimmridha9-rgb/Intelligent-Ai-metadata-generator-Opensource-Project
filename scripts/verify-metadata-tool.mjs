@@ -79,7 +79,8 @@ function runMetadataEngineChecks() {
         'Cat, Studio'
     );
 
-    assert.deepEqual(result.keywords, ['Cat', 'Studio', 'Animal']);
+    assert.equal(result.keywords.length, 5);
+    assert.deepEqual(result.keywords.slice(0, 3), ['Cat', 'Studio', 'Animal']);
     assert.equal(result.hashtags, '#pets #cute');
 }
 

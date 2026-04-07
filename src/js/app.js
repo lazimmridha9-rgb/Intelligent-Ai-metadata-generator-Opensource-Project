@@ -1047,7 +1047,12 @@ async function runAnalysis(base64, mimeType, onSuccess) {
             maxTokens
         );
 
-        const processedData = engine.processResult(data, adjValues.keywordsCount, targetKeywordsHidden.value);
+        const processedData = engine.processResult(
+            data,
+            adjValues.keywordsCount,
+            targetKeywordsHidden.value,
+            adjValues
+        );
 
         onSuccess(processedData);
 
@@ -1303,9 +1308,10 @@ function displayResults(data) {
     // Update count
     const keywordCountEl = document.getElementById('keywordCount');
     if (keywordCountEl) {
-        keywordCountEl.innerText = `${keywords.length}/50`;
+        const activeTarget = Math.max(1, parseInt(metadataAdj.getValues()?.keywordsCount, 10) || 1);
+        keywordCountEl.innerText = `${keywords.length}/${activeTarget}`;
         keywordCountEl.classList.remove('hidden');
-        if (keywords.length > 50) {
+        if (keywords.length > activeTarget) {
             keywordCountEl.classList.add('text-red-400', 'bg-red-500/10');
             keywordCountEl.classList.remove('text-blue-400', 'bg-blue-500/10');
         } else {

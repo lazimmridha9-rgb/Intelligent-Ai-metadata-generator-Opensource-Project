@@ -71,11 +71,12 @@ export class MetadataEngine {
     /**
      * Validates and cleans the resulting data
      * @param {Object} data - The raw JSON data from the API
-     * @param {number} keywordLimit - Max keywords to return
+     * @param {number} keywordLimit - Exact keyword count target
      * @param {string|Array} targetKeywords - Keywords to force-include
+     * @param {Object} constraints - Advanced constraints (titleLength, descLength)
      * @returns {Object} - The sanitized data
      */
-    processResult(data, keywordLimit = 100, targetKeywords = null) {
-        return this.currentStrategy.processResult(data, keywordLimit, targetKeywords);
+    processResult(data, keywordLimit = 100, targetKeywords = null, constraints = {}) {
+        return this.currentStrategy.processResult(data, keywordLimit, targetKeywords, constraints);
     }
 }

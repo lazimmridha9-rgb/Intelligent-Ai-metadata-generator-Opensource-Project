@@ -211,8 +211,8 @@ export class MetadataAdj {
         // Update defaults
         this.defaults = { ...this.defaults, ...newDefaults };
         
-        // Update current settings to match new defaults
-        this.settings = { ...this.defaults };
+        // Keep user's active settings; only backfill missing fields from defaults
+        this.settings = { ...this.defaults, ...this.settings };
         
         // Update UI
         if (this.container) {

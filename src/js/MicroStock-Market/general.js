@@ -92,7 +92,7 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         const descMax = descLen + 10;
 
         // Keywords: Ask for a buffer to ensure we hit the target after deduplication
-        const kwTarget = kwCount + 5;
+        const kwTarget = kwCount;
 
         prompt += `\n\n### 🛑 CRITICAL REQUIREMENTS (MUST FOLLOW OR GENERATION FAILS) 🛑`;
         prompt += `\nYou MUST strictly adhere to the following length constraints. The user has explicitly requested these specific lengths.`;
@@ -111,9 +111,9 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         prompt += `\n   - Strategy: Use multiple sentences. Describe the visual elements, the mood, the lighting, and the conceptual meaning. Do not stop until you reach the character count.`;
 
         prompt += `\n\n3. **Keywords Count**:`;
-        prompt += `\n   - Target: **${kwCount} keywords** (Minimum)`;
-        prompt += `\n   - Instruction: Provide AT LEAST ${kwTarget} keywords to ensure we have enough after filtering.`;
-        prompt += `\n   - Strategy: Start with obvious tags, then move to conceptual tags, then synonyms, then specific details. Do not stop early.`;
+        prompt += `\n   - Target: **EXACTLY ${kwCount} keywords**`;
+        prompt += `\n   - Instruction: Return exactly ${kwTarget} unique and highly relevant keywords in the final JSON array.`;
+        prompt += `\n   - Strategy: Start with obvious tags, then conceptual tags, then synonyms and specific details until you hit the exact count.`;
 
         if (options.keywords && options.keywords.trim()) {
             prompt += `\n\n### 🎯 TARGET KEYWORDS INSTRUCTION (HIGH PRIORITY)`;
@@ -155,7 +155,7 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         prompt += `\nBefore producing the final JSON, perform this internal check:`;
         prompt += `\n1. Count the characters in your Title. Is it close to ${titleLen}? If NO, REWRITE IT.`;
         prompt += `\n2. Count the characters in your Description. Is it close to ${descLen}? If NO, EXPAND IT.`;
-        prompt += `\n3. Count your Keywords. Do you have at least ${kwCount}? If NO, ADD MORE.`;
+        prompt += `\n3. Count your Keywords. Is it EXACTLY ${kwCount}? If NO, FIX IT before output.`;
         
         // Advanced Strategy Output (applies to ALL marketplaces inheriting this class)
         prompt += `\n\n### 🧠 ADVANCED STRATEGY OUTPUT (PROFESSIONAL, STEP-BY-STEP)`;
@@ -218,7 +218,7 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         return prompt;
     }
 
-    processResult(data, keywordLimit = 100, targetKeywords = null) {
+    processResult(data, keywordLimit = 100, targetKeywords = null, constraints = {}) {
         // Ensure keywords is an array
         let keywords = [];
         if (Array.isArray(data.keywords)) {
@@ -256,8 +256,56 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
             }
         }
 
-        // Apply strict limit
-        data.keywords = cleanedKeywords.slice(0, keywordLimit);
+        // Guarantee exact keyword count (fill if model under-produces)
+        const keywordTarget = Math.max(1, parseInt(keywordLimit, 10) || 1);
+        const fillPool = this.extractKeywordCandidates(data, targetKeywords);
+        for (const kw of fillPool) {
+            if (cleanedKeywords.length >= keywordTarget) break;
+            const normalized = kw.toLowerCase();
+            if (!uniqueKeywords.has(normalized)) {
+                uniqueKeywords.add(normalized);
+                cleanedKeywords.push(kw);
+            }
+        }
+
+        // Final fallback tokens if still short
+        let fillerIndex = 1;
+        while (cleanedKeywords.length < keywordTarget) {
+            const filler = `keyword ${fillerIndex}`;
+            const normalized = filler.toLowerCase();
+            if (!uniqueKeywords.has(normalized)) {
+                uniqueKeywords.add(normalized);
+                cleanedKeywords.push(filler);
+            }
+            fillerIndex += 1;
+        }
+        data.keywords = cleanedKeywords.slice(0, keywordTarget);
+
+        // Enforce title + description lengths from Advanced Constraints
+        const targetTitleLength = parseInt(constraints?.titleLength, 10);
+        const targetDescLength = parseInt(constraints?.descLength, 10);
+        const keywordPool = data.keywords;
+
+        if (Number.isFinite(targetTitleLength) && targetTitleLength > 0) {
+            data.title = this.fitTextNearTarget(
+                typeof data.title === 'string' ? data.title : '',
+                targetTitleLength,
+                keywordPool,
+                { minDelta: 15, maxDelta: 20 }
+            );
+        }
+
+        if (Number.isFinite(targetDescLength) && targetDescLength > 0) {
+            data.description = this.fitTextNearTarget(
+                typeof data.description === 'string' ? data.description : '',
+                targetDescLength,
+                [
+                    ...(Array.isArray(keywordPool) ? keywordPool : []),
+                    typeof data.category === 'string' ? data.category : ''
+                ],
+                { minDelta: 25, maxDelta: 40 }
+            );
+        }
 
         // Ensure hashtags is a string
         if (Array.isArray(data.hashtags)) {
@@ -265,5 +313,114 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         }
 
         return data;
+    }
+
+    extractKeywordCandidates(data, targetKeywords = null) {
+        const textBag = [];
+        if (typeof data.title === 'string') textBag.push(data.title);
+        if (typeof data.description === 'string') textBag.push(data.description);
+        if (typeof data.category === 'string') textBag.push(data.category);
+        if (typeof targetKeywords === 'string') textBag.push(targetKeywords);
+        if (Array.isArray(targetKeywords)) textBag.push(targetKeywords.join(', '));
+
+        const stopWords = new Set([
+            'the', 'and', 'for', 'with', 'this', 'that', 'from', 'into', 'about', 'image', 'photo',
+            'stock', 'ideal', 'perfect', 'scene', 'visual', 'very', 'high', 'low', 'your', 'you',
+            'are', 'is', 'was', 'were', 'has', 'have', 'had', 'also', 'than', 'then', 'while'
+        ]);
+
+        const ranked = [];
+        const seen = new Set();
+        for (const text of textBag) {
+            const words = String(text || '')
+                .toLowerCase()
+                .replace(/[^a-z0-9,\s-]/g, ' ')
+                .split(/[\s,]+/)
+                .map((w) => w.trim())
+                .filter(Boolean);
+
+            for (const word of words) {
+                if (word.length < 3) continue;
+                if (stopWords.has(word)) continue;
+                if (seen.has(word)) continue;
+                seen.add(word);
+                ranked.push(word);
+            }
+        }
+
+        return ranked;
+    }
+
+    fitTextNearTarget(text, targetLength, pool = [], tolerance = {}) {
+        const normalizedTarget = Math.max(1, parseInt(targetLength, 10) || 1);
+        const minDelta = Math.max(0, parseInt(tolerance.minDelta, 10) || 0);
+        const maxDelta = Math.max(0, parseInt(tolerance.maxDelta, 10) || 0);
+        const minAllowed = Math.max(1, normalizedTarget - minDelta);
+        const maxAllowed = normalizedTarget + maxDelta;
+
+        let value = String(text || '').replace(/\s+/g, ' ').trim();
+
+        if (!value) {
+            value = this.buildFallbackText(pool);
+        }
+
+        if (value.length > maxAllowed) {
+            value = this.trimToWordBoundary(value, maxAllowed);
+        }
+
+        const extras = Array.isArray(pool)
+            ? pool.map((k) => String(k || '').trim()).filter(Boolean)
+            : [];
+        let idx = 0;
+
+        while (value.length < minAllowed) {
+            let token = extras[idx] || 'seo';
+            idx += 1;
+            token = token.replace(/\s+/g, ' ').trim();
+            if (!token) token = 'seo';
+
+            const prefix = value.endsWith(' ') || value.length === 0 ? '' : ' ';
+            const remaining = minAllowed - value.length;
+            const fragment = `${prefix}${token}`;
+
+            if (fragment.length <= remaining) {
+                value += fragment;
+                continue;
+            }
+
+            if (remaining > prefix.length) {
+                value += prefix + token.slice(0, remaining - prefix.length).replace(/\s+$/, '');
+            }
+        }
+
+        return value.trim();
+    }
+
+    trimToWordBoundary(text, maxAllowed) {
+        const clean = String(text || '').replace(/\s+/g, ' ').trim();
+        if (clean.length <= maxAllowed) return clean;
+
+        const slice = clean.slice(0, maxAllowed);
+        const lastBreak = Math.max(
+            slice.lastIndexOf(' '),
+            slice.lastIndexOf(','),
+            slice.lastIndexOf('.'),
+            slice.lastIndexOf(';')
+        );
+
+        if (lastBreak <= Math.floor(maxAllowed * 0.65)) {
+            return slice.trim();
+        }
+        return slice.slice(0, lastBreak).trim();
+    }
+
+    buildFallbackText(pool = []) {
+        const cleanPool = Array.isArray(pool)
+            ? pool.map((k) => String(k || '').trim()).filter(Boolean)
+            : [];
+        if (cleanPool.length === 0) {
+            return 'SEO optimized metadata';
+        }
+        return cleanPool.slice(0, 6).join(' ');
     }
 }
