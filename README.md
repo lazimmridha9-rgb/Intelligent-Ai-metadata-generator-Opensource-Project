@@ -1,4 +1,4 @@
-﻿# ?? NOMETA - Intelligent AI Metadata Generator (2026)
+﻿# :rocket: NOMETA - Intelligent AI Metadata Generator (2026)
 
 <p align="center">
   <strong>Turn any image into marketplace-ready, SEO-optimized metadata in seconds.</strong><br/>
@@ -15,7 +15,7 @@
 
 ---
 
-## ? Why NOMETA?
+## :sparkles: Why NOMETA?
 
 NOMETA is a **client-side AI metadata studio** that analyzes images and generates high-converting metadata for stock and SEO workflows.
 
@@ -23,38 +23,38 @@ Instead of manually writing titles, descriptions, tags, alt text, and social sni
 
 ---
 
-## ?? What You Get Per Image
+## :package: What You Get Per Image
 
-- ??? SEO title
-- ?? Meta description
-- ?? Keywords/tags
-- ??? Suggested category
-- ?? Social caption + hashtags
-- ? Alt text
-- ?? JSON-LD structured data
-- ?? Technical stats + quality insights
-- ?? Color palette and image properties
-- ?? Strategy object (deep SEO reasoning + ordering plan)
+- :label: SEO title
+- :memo: Meta description
+- :key: Keywords/tags
+- :card_file_box: Suggested category
+- :mega: Social caption + hashtags
+- :wheelchair: Alt text
+- :page_facing_up: JSON-LD structured data
+- :bar_chart: Technical stats + quality insights
+- :art: Color palette and image properties
+- :compass: Strategy object (deep SEO reasoning + ordering plan)
 
 ---
 
-## ?? Marketplace-Aware Modes
+## :globe_with_meridians: Marketplace-Aware Modes
 
 NOMETA supports strategy tuning for:
 
-- ?? General mode
-- ?? Adobe Stock
-- ?? Shutterstock
-- ?? iStock
-- ??? Getty Images
-- ?? Pond5
-- ?? Vecteezy
-- ?? Freepik
-- ?? Creative Fabrica
+- :earth_africa: General mode
+- :art: Adobe Stock
+- :camera_flash: Shutterstock
+- :camera: iStock
+- :frame_with_picture: Getty Images
+- :clapper: Pond5
+- :jigsaw: Vecteezy
+- :gem: Freepik
+- :thread: Creative Fabrica
 
 ---
 
-## ?? AI Providers Supported
+## :electric_plug: AI Providers Supported
 
 - `Google Gemini`
 - `Groq`
@@ -64,7 +64,7 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 
 ---
 
-## ? Core Capabilities
+## :zap: Core Capabilities
 
 ### 1. Single + Batch Image Processing
 - Upload one image or a full queue
@@ -72,11 +72,11 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 - Retry only failed items
 
 ### 2. Advanced Prompt Controls
-- ??? Temperature control (creativity)
-- ??? Speed modes (`1x`, `2x`, `3x`, `4x`)
-- ?? Dynamic constraints (title/description/keyword limits)
-- ?? Target keyword chip input
-- ?? Custom prompt manager with persistence
+- :control_knobs: Temperature control (creativity)
+- :racehorse: Speed modes (`1x`, `2x`, `3x`, `4x`)
+- :straight_ruler: Dynamic constraints (title/description/keyword limits)
+- :puzzle_piece: Target keyword chip input
+- :pencil2: Custom prompt manager with persistence
 
 ### 3. Smart Export Options
 - `JSON` export (single item)
@@ -94,7 +94,7 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 
 ---
 
-## ??? Tech Stack
+## :hammer_and_wrench: Tech Stack
 
 - **Frontend:** HTML + Tailwind CSS + custom CSS
 - **Logic:** Vanilla JavaScript (ES Modules)
@@ -104,7 +104,7 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 
 ---
 
-## ?? Project Structure
+## :file_folder: Project Structure
 
 ```text
 .
@@ -142,7 +142,7 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 
 ---
 
-## ?? Quick Start
+## :traffic_light: Quick Start
 
 ### Prerequisites
 
@@ -175,7 +175,7 @@ Run-NOMETA-Localhost.bat
 
 ---
 
-## ?? API Key Setup
+## :lock: API Key Setup
 
 Inside the app:
 
@@ -192,7 +192,7 @@ Key portals:
 
 ---
 
-## ?? npm Scripts
+## :scroll: npm Scripts
 
 | Script | Purpose |
 |---|---|
@@ -207,7 +207,7 @@ Key portals:
 
 ---
 
-## ?? Deployment
+## :globe_with_meridians: Deployment
 
 This project is static-host ready.
 
@@ -231,7 +231,7 @@ This project is static-host ready.
 
 ---
 
-## ?? Security Notes
+## :shield: Security Notes
 
 - This is a **frontend/client-side** app
 - API keys are stored in browser storage for the current user
@@ -240,7 +240,7 @@ This project is static-host ready.
 
 ---
 
-## ?? Contributing
+## :handshake: Contributing
 
 1. Fork the repo
 2. Create a feature branch
@@ -250,7 +250,7 @@ This project is static-host ready.
 
 ---
 
-## ?? Implementation Notes
+## :pushpin: Implementation Notes
 
 - Debug mode:
   - URL: `?debug=1`
@@ -259,7 +259,7 @@ This project is static-host ready.
 
 ---
 
-## ?? License
+## :page_with_curl: License
 
 A `LICENSE` file is not currently included in this repository.
 Add one to define explicit open-source usage terms.
@@ -267,5 +267,5 @@ Add one to define explicit open-source usage terms.
 ---
 
 <p align="center">
-  Made with ?? for creators who want speed, clarity, and better rankings.
+  Made with :heart: for creators who want speed, clarity, and better rankings.
 </p>
