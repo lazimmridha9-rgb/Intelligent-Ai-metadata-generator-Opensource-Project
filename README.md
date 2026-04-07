@@ -1,106 +1,110 @@
-﻿# Intelligent AI Metadata Generator (2026)
+﻿# ?? NOMETA - Intelligent AI Metadata Generator (2026)
 
-A browser-based metadata workflow tool for stock creators, designers, and digital marketers.  
-It analyzes images with multimodal AI and generates SEO-focused metadata tuned for multiple marketplaces.
+<p align="center">
+  <strong>Turn any image into marketplace-ready, SEO-optimized metadata in seconds.</strong><br/>
+  Built for stock creators, designers, marketers, and high-volume content teams.
+</p>
 
-## What this app does
+<p align="center">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-Web_App-0f172a?style=for-the-badge&logo=googlechrome&logoColor=white" />
+  <img alt="Language" src="https://img.shields.io/badge/JavaScript-ES_Modules-f7df1e?style=for-the-badge&logo=javascript&logoColor=111" />
+  <img alt="Build" src="https://img.shields.io/badge/Build-esbuild-ffcf00?style=for-the-badge" />
+  <img alt="CSS" src="https://img.shields.io/badge/CSS-Tailwind_3-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=fff" />
+  <img alt="Status" src="https://img.shields.io/badge/Status-Active_Development-16a34a?style=for-the-badge" />
+</p>
 
-- Accepts single image upload or multi-image batch queue.
-- Supports AI providers:
-  - Google Gemini
-  - Groq
-  - OpenRouter
-- Generates:
-  - Title
-  - Description
-  - Keywords
-  - Category
-  - Social caption and hashtags
-  - Alt text
-  - Technical stats
-  - Suggested filename
-  - Strategy object (step-by-step SEO reasoning)
-- Adds marketplace-specific prompt strategies:
-  - General
-  - Adobe Stock
-  - Shutterstock
-  - iStock
-  - Getty Images
-  - Pond5
-  - Vecteezy
-  - Freepik
-  - Creative Fabrica
-- Exports metadata as:
-  - JSON
-  - Batch CSV
-  - Embedded file output (XMP in JPG/PNG/SVG, ZIP for batch)
+---
 
-## Major features
+## ? Why NOMETA?
 
-### 1) Multi-provider image AI
+NOMETA is a **client-side AI metadata studio** that analyzes images and generates high-converting metadata for stock and SEO workflows.
 
-The app uses provider-specific API clients and a shared JSON parser fallback layer for more resilient output parsing.
+Instead of manually writing titles, descriptions, tags, alt text, and social snippets, NOMETA gives you a **full metadata package** with strategy-level output.
 
-- Gemini: `gemini-2.5-pro`, `gemini-2.5-flash-lite`, `gemini-2.5-flash`
-- Groq: `meta-llama/llama-4-scout-17b-16e-instruct`
-- OpenRouter: `openai/gpt-4o`, `anthropic/claude-3.7-sonnet`, `google/gemini-2.0-flash-001`, `meta-llama/llama-3.2-11b-vision-instruct`
+---
 
-### 2) Advanced prompt controls
+## ?? What You Get Per Image
 
-- Temperature slider (persisted in local storage)
-- Speed mode: `1x`, `2x`, `3x`, `4x` (changes max tokens and batch delay)
-- Dynamic constraints:
-  - title length
-  - description length
-  - keyword count
-- Target keyword chip input (deduplicated and prioritized)
-- Custom prompt override with templates and autosave
+- ??? SEO title
+- ?? Meta description
+- ?? Keywords/tags
+- ??? Suggested category
+- ?? Social caption + hashtags
+- ? Alt text
+- ?? JSON-LD structured data
+- ?? Technical stats + quality insights
+- ?? Color palette and image properties
+- ?? Strategy object (deep SEO reasoning + ordering plan)
 
-### 3) Batch workflow
+---
 
-- Drag/drop multiple files to queue
-- Per-item status: pending, processing, done, error
+## ?? Marketplace-Aware Modes
+
+NOMETA supports strategy tuning for:
+
+- ?? General mode
+- ?? Adobe Stock
+- ?? Shutterstock
+- ?? iStock
+- ??? Getty Images
+- ?? Pond5
+- ?? Vecteezy
+- ?? Freepik
+- ?? Creative Fabrica
+
+---
+
+## ?? AI Providers Supported
+
+- `Google Gemini`
+- `Groq`
+- `OpenRouter`
+
+Provider/model selection is configurable in the UI, and keys/models are stored per provider in browser storage.
+
+---
+
+## ? Core Capabilities
+
+### 1. Single + Batch Image Processing
+- Upload one image or a full queue
+- Track status per item: `pending / processing / done / error`
 - Retry only failed items
-- Batch CSV export
-- Batch embedded metadata ZIP export
 
-### 4) Metadata embedding
+### 2. Advanced Prompt Controls
+- ??? Temperature control (creativity)
+- ??? Speed modes (`1x`, `2x`, `3x`, `4x`)
+- ?? Dynamic constraints (title/description/keyword limits)
+- ?? Target keyword chip input
+- ?? Custom prompt manager with persistence
 
-Embedded download writes metadata directly into files:
+### 3. Smart Export Options
+- `JSON` export (single item)
+- `CSV` export (batch output)
+- Embedded metadata download:
+  - JPG -> APP1 XMP
+  - PNG -> iTXt XMP
+  - SVG -> `<metadata>` block
+  - Unsupported formats can be normalized to PNG for analysis compatibility
 
-- JPEG: APP1 XMP
-- PNG: iTXt XMP
-- SVG: `<metadata>` block
-- Unsupported image formats are converted to PNG for compatibility
+### 4. Local-First UX
+- Saves provider key/model config locally
+- Saves marketplace, controls, and custom prompt
+- Keeps recent history for faster repeated workflows
 
-### 5) Technical and SEO helper output
+---
 
-For each generated item, the app also renders:
+## ??? Tech Stack
 
-- Image properties (dimensions, ratio, megapixels, file size, alpha presence)
-- Quality heuristics (sharpness, exposure, contrast, saturation)
-- Dominant color palette
-- Copy-ready SEO `<head>` snippet with JSON-LD
+- **Frontend:** HTML + Tailwind CSS + custom CSS
+- **Logic:** Vanilla JavaScript (ES Modules)
+- **Build:** esbuild, html-minifier-terser, tailwindcss
+- **Optional hardening:** javascript-obfuscator
+- **Packaging:** JSZip
 
-### 6) Local-first persistence
+---
 
-Saved in browser storage:
-
-- Provider API keys
-- Selected models
-- Marketplace selection
-- Speed, temperature, and constraints
-- Custom prompt
-- Recent generation history (up to 5 items, with storage fallback handling)
-
-## Tech stack
-
-- Frontend: HTML, Tailwind CSS, custom CSS
-- Logic: Vanilla JavaScript ES modules
-- Build tooling: esbuild, html-minifier-terser, tailwindcss, javascript-obfuscator (optional)
-- Packaging: JSZip for batch embedded download archives
-
-## Project structure
+## ?? Project Structure
 
 ```text
 .
@@ -124,21 +128,25 @@ Saved in browser storage:
 |   |-- tag-input/
 |   `-- Icon/
 |-- scripts/
-|   |-- verify-metadata-tool.mjs
-|   |-- local-host-server.mjs
+|   |-- build-vercel.mjs
 |   |-- dev-local.mjs
-|   `-- build-vercel.mjs
-|-- vercel.json
+|   |-- local-host-server.mjs
+|   |-- verify-dist-sync.mjs
+|   `-- verify-metadata-tool.mjs
+|-- dist/
 |-- netlify.toml
+|-- vercel.json
 |-- _headers
 `-- README.md
 ```
 
-## Getting started
+---
 
-### Requirements
+## ?? Quick Start
 
-- Node.js 18+ recommended
+### Prerequisites
+
+- Node.js `18+`
 - npm
 
 ### Install
@@ -147,67 +155,67 @@ Saved in browser storage:
 npm install
 ```
 
-### Run in development
-
-Start the built-in live development host:
+### Run Dev Mode
 
 ```bash
 npm run dev
 ```
 
-Open: `http://localhost:4173`
+Default local URL:
 
-You can also run the one-click launcher on Windows: `Run-NOMETA-Localhost.bat`
+```text
+http://localhost:4173
+```
 
-### Configure API access
+Also available for Windows one-click run:
+
+```text
+Run-NOMETA-Localhost.bat
+```
+
+---
+
+## ?? API Key Setup
 
 Inside the app:
 
-1. Choose provider (`Gemini`, `Groq`, `OpenRouter`)
+1. Select provider (`Gemini`, `Groq`, or `OpenRouter`)
 2. Paste API key
 3. Choose model
 4. Click save
 
-Provider key pages:
+Key portals:
 
-- Gemini: <https://aistudio.google.com/apikey>
-- Groq: <https://console.groq.com/keys>
-- OpenRouter: <https://openrouter.ai/keys>
+- Gemini: https://aistudio.google.com/apikey
+- Groq: https://console.groq.com/keys
+- OpenRouter: https://openrouter.ai/keys
 
-## npm scripts
+---
 
-- `npm run verify`  
-  Smoke checks for parser behavior, provider registry storage, and metadata engine routing.
-- `npm run dev`  
-  Watches `src/`, rebuilds `dist/` on changes, and serves `dist/` with live reload. Prefers port `4173` and auto-falls back to the next free port if needed.
-- `npm run dev:host`  
-  Runs a fresh build first, then serves `dist/` (useful when you just want a clean local preview without watch mode). Prefers `4173` and auto-falls back if needed.
-- `npm run build:tailwind`  
-  Rebuilds `src/css/tailwind.generated.css`.
-- `npm run build`  
-  Builds production output into `dist/` (bundled/minified JS + minified HTML + static assets).
-- `npm run verify:dist`  
-  Rebuilds `dist/` and verifies that hashed CSS/JS references and copied static files are consistent with `src/`.
-- `npm run build:secure`  
-  Alias of `npm run build`.
-- `npm run build:obfuscate`  
-  Production build with optional JS obfuscation.
+## ?? npm Scripts
 
-## Deployment
+| Script | Purpose |
+|---|---|
+| `npm run dev` | Full dev pipeline: watch `src`, rebuild `dist`, serve with live reload |
+| `npm run dev:host` | Build once, then host `dist` |
+| `npm run build:tailwind` | Regenerate `src/css/tailwind.generated.css` |
+| `npm run build` | Production build to `dist` |
+| `npm run build:secure` | Alias of `build` |
+| `npm run build:obfuscate` | Build with optional JS obfuscation |
+| `npm run verify` | Smoke checks for metadata engine and registry behavior |
+| `npm run verify:dist` | Rebuild + verify `dist` sync integrity |
 
-This project is ready for static hosting.
+---
+
+## ?? Deployment
+
+This project is static-host ready.
 
 - Vercel config: `vercel.json`
 - Netlify config: `netlify.toml`
-- Additional headers: `_headers`
+- Cache/header rules: `_headers`
 
-### Live update behavior (important)
-
-- Local dev (`npm run dev`): file save করলে live reload হয়।
-- Live hosting (Vercel/Netlify): code change reflect করতে deploy লাগবে (usually Git push -> auto deploy)।
-- Browser stale cache avoid করার জন্য hosting cache headers `must-revalidate` করা আছে।
-
-### Vercel quick setup
+### Vercel Setup
 
 1. Import repository
 2. Framework preset: `Other`
@@ -215,28 +223,49 @@ This project is ready for static hosting.
 4. Output directory: `dist`
 5. Deploy
 
-## Privacy and security notes
+### Cache & Update Behavior
 
-- This is a client-side app. API keys are stored in the browser storage of the current user.
-- Frontend code is always visible to end users in browser-delivered apps.
-- For strong secret protection, move provider calls to a backend you control.
+- Local dev reflects changes instantly via live reload
+- Hosted environments require a new deployment for code changes
+- Cache policies are tuned to reduce stale frontend artifacts
 
-## Known implementation notes
+---
 
-- A legacy `grok` module exists in source, but the active provider selector currently uses `gemini`, `groq`, and `openrouter`.
-- Debug mode can be enabled with:
-  - query string: `?debug=1`
-  - local storage: `metadata_debug_mode = '1'`
+## ?? Security Notes
 
-## Contributing
+- This is a **frontend/client-side** app
+- API keys are stored in browser storage for the current user
+- Client-delivered frontend code is inspectable by end users
+- For stronger secret protection, route provider calls through your backend
 
-1. Fork the repository
+---
+
+## ?? Contributing
+
+1. Fork the repo
 2. Create a feature branch
-3. Commit changes
-4. Push your branch
+3. Commit your changes
+4. Push branch
 5. Open a pull request
 
-## License
+---
 
-No license file is currently included in this repository.  
-Add a `LICENSE` file if you want explicit open-source usage terms.
+## ?? Implementation Notes
+
+- Debug mode:
+  - URL: `?debug=1`
+  - Local storage key: `metadata_debug_mode = '1'`
+- A legacy `grok` module may exist in source, but active provider flow uses `gemini`, `groq`, and `openrouter`.
+
+---
+
+## ?? License
+
+A `LICENSE` file is not currently included in this repository.
+Add one to define explicit open-source usage terms.
+
+---
+
+<p align="center">
+  Made with ?? for creators who want speed, clarity, and better rankings.
+</p>
