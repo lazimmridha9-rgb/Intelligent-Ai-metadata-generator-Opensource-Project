@@ -1,7 +1,7 @@
 ﻿# :rocket: NOMETA - Intelligent AI Metadata Generator (2026)
 
 <p align="center">
-  <strong>Turn any image into marketplace-ready, SEO-optimized metadata in seconds.</strong><br/>
+  <strong>Turn any file into marketplace-ready, SEO-optimized metadata in seconds.</strong><br/>
   Built for stock creators, designers, marketers, and high-volume content teams.
 </p>
 
