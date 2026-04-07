@@ -1,11 +1,14 @@
 import { storageGetItem, storageRemoveItem, storageSetItem } from './utils/safe-storage.js';
 
+const MAX_HISTORY_IMAGE_BASE64_CHARS = 250000;
+
 export class HistoryManager {
     constructor(callbacks) {
         this.history = JSON.parse(storageGetItem('gemini_history') || '[]');
         if (!Array.isArray(this.history)) {
             this.history = [];
         }
+        this.history = this.history.map(item => this._sanitizeHistoryItem(item));
         this.onLoadItem = callbacks.onLoadItem;
         this.historyList = document.getElementById('historyList');
         this.historySection = document.getElementById('historySection');
@@ -22,9 +25,10 @@ export class HistoryManager {
             image: imageBase64,
             mimeType: mimeType
         };
+        const sanitizedItem = this._sanitizeHistoryItem(newItem);
 
         // Add to beginning
-        this.history.unshift(newItem);
+        this.history.unshift(sanitizedItem);
 
         // Limit to 5 items to prevent localStorage overflow
         if (this.history.length > 5) {
@@ -33,6 +37,17 @@ export class HistoryManager {
 
         this._save();
         this.render();
+    }
+
+    _sanitizeHistoryItem(item) {
+        if (!item || typeof item !== 'object') return item;
+        const image = typeof item.image === 'string' ? item.image : null;
+        const keepImage = image && image.length <= MAX_HISTORY_IMAGE_BASE64_CHARS;
+        return {
+            ...item,
+            image: keepImage ? image : null,
+            mimeType: keepImage ? item.mimeType : null
+        };
     }
 
     _save() {

@@ -45,7 +45,9 @@ const providerMinTokens = {
 };
 const DIRECT_PROVIDER_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 const EXTRA_IMAGE_EXTENSIONS = ['.svg', '.svgz', '.heic', '.heif', '.avif', '.bmp', '.tif', '.tiff', '.ico'];
-const MAX_ANALYSIS_IMAGE_DIMENSION = 3072;
+const MAX_ANALYSIS_IMAGE_DIMENSION = 2048;
+const MAX_DIRECT_UPLOAD_BYTES = 2 * 1024 * 1024;
+const ANALYSIS_JPEG_QUALITY = 0.86;
 
 // State
 let selectedProvider = getStoredProvider();
@@ -485,7 +487,7 @@ function renderFileToImage(file) {
     });
 }
 
-async function convertFileToPngDataUrl(file) {
+async function convertFileToOptimizedJpegDataUrl(file) {
     const img = await renderFileToImage(file);
     const originalWidth = img.naturalWidth || img.width || 2048;
     const originalHeight = img.naturalHeight || img.height || 2048;
@@ -504,14 +506,15 @@ async function convertFileToPngDataUrl(file) {
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL('image/png');
+    return canvas.toDataURL('image/jpeg', ANALYSIS_JPEG_QUALITY);
 }
 
 async function normalizeImageForAnalysis(file) {
     const sourceMime = (file.type || '').toLowerCase();
     const useDirect = DIRECT_PROVIDER_MIME_TYPES.has(sourceMime);
+    const isDirectSizeSafe = Number.isFinite(file?.size) && file.size <= MAX_DIRECT_UPLOAD_BYTES;
 
-    if (useDirect) {
+    if (useDirect && isDirectSizeSafe) {
         const dataUrl = await readFileAsDataURL(file);
         return {
             file,
@@ -522,11 +525,11 @@ async function normalizeImageForAnalysis(file) {
         };
     }
 
-    const convertedDataUrl = await convertFileToPngDataUrl(file);
+    const convertedDataUrl = await convertFileToOptimizedJpegDataUrl(file);
     return {
         file,
         name: file.name,
-        mimeType: 'image/png',
+        mimeType: 'image/jpeg',
         base64: convertedDataUrl.split(',')[1],
         wasConverted: true
     };
