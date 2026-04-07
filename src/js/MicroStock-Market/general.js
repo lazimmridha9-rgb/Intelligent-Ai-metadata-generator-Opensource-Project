@@ -94,20 +94,20 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         // Keywords: Ask for a buffer to ensure we hit the target after deduplication
         const kwTarget = kwCount;
 
-        prompt += `\n\n### 🛑 CRITICAL REQUIREMENTS (MUST FOLLOW OR GENERATION FAILS) 🛑`;
-        prompt += `\nYou MUST strictly adhere to the following length constraints. The user has explicitly requested these specific lengths.`;
+        prompt += `\n\n### 🛑 CRITICAL REQUIREMENTS (MUST FOLLOW) 🛑`;
+        prompt += `\nFollow the requested lengths while keeping language natural and complete. Never cut a word midway just to hit character count.`;
 
         prompt += `\n\n1. **Title Length**:`;
-        prompt += `\n   - Target: **${titleLen} characters** (Strict)`;
+        prompt += `\n   - Target: **around ${titleLen} characters**`;
         prompt += `\n   - Acceptable Range: **${titleMin} - ${titleMax} characters**`;
-        prompt += `\n   - Instruction: FORCE yourself to write a title that falls EXACTLY within this range.`;
+        prompt += `\n   - Instruction: Keep title readable and complete; do NOT end with broken/incomplete words.`;
         prompt += `\n   - If your title is too short: Add descriptive adjectives (e.g., "rustic", "vibrant"), time of day (e.g., "at sunset"), or emotion.`;
         prompt += `\n   - If your title is too long: Remove filler words but keep the main keywords.`;
 
         prompt += `\n\n2. **Description Length**:`;
-        prompt += `\n   - Target: **${descLen} characters** (Strict)`;
+        prompt += `\n   - Target: **around ${descLen} characters**`;
         prompt += `\n   - Acceptable Range: **${descMin} - ${descMax} characters**`;
-        prompt += `\n   - Instruction: Write a detailed, rich description that fills this space.`;
+        prompt += `\n   - Instruction: Write a detailed, rich description that fills this space.\n   - Instruction: Description must end as a complete sentence, never with clipped words.`;
         prompt += `\n   - Strategy: Use multiple sentences. Describe the visual elements, the mood, the lighting, and the conceptual meaning. Do not stop until you reach the character count.`;
 
         prompt += `\n\n3. **Keywords Count**:`;
@@ -153,8 +153,8 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
 
         prompt += `\n\n### SELF-VERIFICATION BEFORE OUTPUTTING JSON`;
         prompt += `\nBefore producing the final JSON, perform this internal check:`;
-        prompt += `\n1. Count the characters in your Title. Is it close to ${titleLen}? If NO, REWRITE IT.`;
-        prompt += `\n2. Count the characters in your Description. Is it close to ${descLen}? If NO, EXPAND IT.`;
+        prompt += `\n1. Count the characters in your Title. Is it close to ${titleLen}? If NO, REWRITE IT naturally.`;
+        prompt += `\n2. Count the characters in your Description. Is it close to ${descLen}? If NO, EXPAND IT naturally.`;
         prompt += `\n3. Count your Keywords. Is it EXACTLY ${kwCount}? If NO, FIX IT before output.`;
         
         // Advanced Strategy Output (applies to ALL marketplaces inheriting this class)
@@ -291,9 +291,10 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
                 typeof data.title === 'string' ? data.title : '',
                 targetTitleLength,
                 keywordPool,
-                { minDelta: 15, maxDelta: 20 }
+                { minDelta: 8, maxDelta: 20, mode: 'title' }
             );
         }
+        data.title = this.sanitizeReadableEnding(typeof data.title === 'string' ? data.title : '', 'title');
 
         if (Number.isFinite(targetDescLength) && targetDescLength > 0) {
             data.description = this.fitTextNearTarget(
@@ -303,9 +304,10 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
                     ...(Array.isArray(keywordPool) ? keywordPool : []),
                     typeof data.category === 'string' ? data.category : ''
                 ],
-                { minDelta: 25, maxDelta: 40 }
+                { minDelta: 15, maxDelta: 40, mode: 'description' }
             );
         }
+        data.description = this.sanitizeReadableEnding(typeof data.description === 'string' ? data.description : '', 'description');
 
         // Ensure hashtags is a string
         if (Array.isArray(data.hashtags)) {
@@ -355,6 +357,7 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         const normalizedTarget = Math.max(1, parseInt(targetLength, 10) || 1);
         const minDelta = Math.max(0, parseInt(tolerance.minDelta, 10) || 0);
         const maxDelta = Math.max(0, parseInt(tolerance.maxDelta, 10) || 0);
+        const mode = tolerance?.mode === 'description' ? 'description' : 'title';
         const minAllowed = Math.max(1, normalizedTarget - minDelta);
         const maxAllowed = normalizedTarget + maxDelta;
 
@@ -372,24 +375,36 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
             ? pool.map((k) => String(k || '').trim()).filter(Boolean)
             : [];
         let idx = 0;
+        const used = new Set(value.toLowerCase().split(/\s+/).filter(Boolean));
 
         while (value.length < minAllowed) {
-            let token = extras[idx] || 'seo';
+            let token = extras[idx] || '';
             idx += 1;
             token = token.replace(/\s+/g, ' ').trim();
-            if (!token) token = 'seo';
+            if (!token) break;
+            if (used.has(token.toLowerCase())) continue;
+            used.add(token.toLowerCase());
 
             const prefix = value.endsWith(' ') || value.length === 0 ? '' : ' ';
-            const remaining = minAllowed - value.length;
-            const fragment = `${prefix}${token}`;
+            const candidate = mode === 'description'
+                ? `${prefix}Ideal for ${token} use.`
+                : `${prefix}${token}`;
 
-            if (fragment.length <= remaining) {
-                value += fragment;
-                continue;
+            if (value.length + candidate.length <= maxAllowed) {
+                value += candidate;
+            } else {
+                break;
             }
+        }
 
-            if (remaining > prefix.length) {
-                value += prefix + token.slice(0, remaining - prefix.length).replace(/\s+$/, '');
+        if (value.length > maxAllowed) {
+            value = this.trimToWordBoundary(value, maxAllowed);
+        }
+
+        if (mode === 'description') {
+            value = value.replace(/\s+([,.!?;:])/g, '$1').trim();
+            if (value && !/[.!?]$/.test(value) && value.length + 1 <= maxAllowed) {
+                value += '.';
             }
         }
 
@@ -423,4 +438,27 @@ Return ONLY a valid JSON object. No markdown formatting outside the JSON block.
         }
         return cleanPool.slice(0, 6).join(' ');
     }
+
+    sanitizeReadableEnding(text, mode = 'title') {
+        let value = String(text || '').replace(/\s+/g, ' ').trim();
+        if (!value) return value;
+
+        value = value.replace(/[,:;/-]+$/, '').trim();
+
+        if (mode === 'description') {
+            // If it ends abruptly without punctuation, drop the last fragment-like token.
+            if (!/[.!?]$/.test(value)) {
+                const shortened = value.replace(/\s+\S+$/, '').trim();
+                if (shortened.length >= Math.floor(value.length * 0.7)) {
+                    value = shortened;
+                }
+                if (value && !/[.!?]$/.test(value)) {
+                    value += '.';
+                }
+            }
+        }
+
+        return value;
+    }
 }
+
