@@ -29,7 +29,7 @@ if errorlevel 1 (
 )
 
 if not exist "node_modules" (
-  echo [1/3] Installing project dependencies...
+  echo [1/4] Installing project dependencies...
   call npm install
   if errorlevel 1 (
     echo.
@@ -38,27 +38,30 @@ if not exist "node_modules" (
     exit /b 1
   )
 ) else (
-  echo [1/3] Dependencies already installed.
+  echo [1/4] Dependencies already installed.
 )
 
-echo [2/3] Building production files from src to dist...
-call npm run build
-if errorlevel 1 (
-  echo.
-  echo [ERROR] Build failed.
-  pause
-  exit /b 1
-)
+echo [2/4] Clearing previous local host on port 4173...
+powershell -NoProfile -Command ^
+  "$localHosts = Get-CimInstance Win32_Process -Filter \"Name = 'node.exe'\" -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like '*local-host-server.mjs*' }; " ^
+  "if ($localHosts) { foreach ($proc in $localHosts) { Write-Output ('[INFO] Stopping old local host process PID ' + $proc.ProcessId + '...'); Stop-Process -Id $proc.ProcessId -Force -ErrorAction SilentlyContinue } }"
+powershell -NoProfile -Command ^
+  "$pids = Get-NetTCPConnection -LocalPort 4173 -State Listen -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique; " ^
+  "if ($pids) { foreach ($id in $pids) { Write-Output ('[INFO] Stopping previous process PID ' + $id + ' on port 4173...'); Stop-Process -Id $id -Force -ErrorAction SilentlyContinue } } else { Write-Output '[INFO] No existing process found on port 4173.' }"
 
-echo [3/3] Starting local host from dist...
+echo [3/4] Preparing build+watch pipeline...
+echo [INFO] Initial build will run automatically.
+
+echo [4/4] Starting live local host from dist (auto-built from src)...
+echo [INFO] Preferred URL: http://localhost:4173 (auto fallback to next free port if needed)
 echo.
-echo Server URL: http://localhost:4173
+echo Server URL will be printed by the host (^> [NOMETA] Local URL: ...^)
 echo Press Ctrl+C to stop the server.
 echo.
-call node scripts/local-host-server.mjs dist 4173
+call npm run dev
 if errorlevel 1 (
   echo.
-  echo [ERROR] Local host server failed to start.
+  echo [ERROR] Local host failed to start.
   pause
   exit /b 1
 )

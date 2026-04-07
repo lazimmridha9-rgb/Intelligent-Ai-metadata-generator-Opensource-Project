@@ -43,6 +43,15 @@ h6 {
     background-image: linear-gradient(to bottom, #60a5fa, #a78bfa);
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 /* Glassmorphism effects */
 .glass-panel {
     background: rgba(15, 23, 42, 0.6);
@@ -128,6 +137,181 @@ h6 {
 #resultsContent .group:hover {
     background: rgba(15, 23, 42, 0.3);
     border-color: rgba(96, 165, 250, 0.1);
+}
+
+.metadata-preview-card {
+    position: relative;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(15, 23, 42, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px;
+    box-shadow: 
+        0 20px 50px -12px rgba(0, 0, 0, 0.5),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.metadata-preview-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.05), transparent 40%);
+    pointer-events: none;
+}
+
+.metadata-preview-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.metadata-preview-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.metadata-preview-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    font-size: 1.2rem;
+    box-shadow: 0 8px 16px -4px rgba(59, 130, 246, 0.2);
+}
+
+.metadata-preview-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: 'Outfit', sans-serif;
+}
+
+.metadata-preview-subtitle {
+    margin: 2px 0 0;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.metadata-preview-pill {
+    border-radius: 10px;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    background: rgba(37, 99, 235, 0.15);
+    color: #93c5fd;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.metadata-preview-body {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.metadata-preview-figure {
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(2, 6, 23, 0.4);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease;
+}
+
+.metadata-preview-figure:hover {
+    transform: scale(1.02);
+}
+
+.metadata-preview-figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.metadata-preview-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+.metadata-preview-file-name {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #f8fafc;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metadata-preview-summary {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    background: rgba(2, 6, 23, 0.3);
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.metadata-preview-stats {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.metadata-preview-stats span {
+    font-size: 0.7rem;
+    color: #cbd5e1;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(30, 41, 59, 0.4);
+    padding: 6px 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.metadata-preview-stats span:hover {
+    background: rgba(30, 41, 59, 0.6);
+    border-color: rgba(96, 165, 250, 0.2);
+    color: #ffffff;
+}
+
+@media (max-width: 860px) {
+    .metadata-preview-body {
+        grid-template-columns: 1fr;
+    }
 }
 
 [contenteditable="true"] {

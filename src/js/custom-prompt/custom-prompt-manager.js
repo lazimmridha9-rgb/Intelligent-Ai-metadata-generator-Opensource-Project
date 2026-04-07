@@ -48,71 +48,74 @@ export class CustomPromptManager {
                         <div class="w-8 h-8 rounded-lg bg-slate-800/50 flex items-center justify-center text-primary border border-white/5 shadow-inner">
                             <i class="fa-solid fa-wand-magic-sparkles"></i>
                         </div>
-                        <h3 class="text-sm font-bold text-white leading-tight">Custom System Prompt</h3>
+                        <h3 class="text-sm font-bold text-white leading-tight uppercase tracking-wider">Custom Strategy</h3>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span id="customPromptActive" class="hidden text-[9px] font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20 uppercase tracking-wider">
-                            <i class="fa-solid fa-check-circle"></i> Active
-                        </span>
-                        <span id="customPromptStatus" class="text-[10px] font-mono text-slate-500 transition-colors">Saved</span>
+                    <div class="flex items-center gap-1.5 relative z-10">
+                        <!-- Active Badge -->
+                        <div id="customPromptActive" class="hidden items-center gap-1 px-1.5 py-0.5 rounded-full bg-primary/10 border border-primary/20 shadow-sm">
+                            <i class="fa-solid fa-fire text-[8px] text-primary animate-pulse"></i>
+                            <span class="text-[8px] font-bold text-primary uppercase tracking-widest">Active</span>
+                        </div>
+                        <!-- Saved Status -->
+                        <div class="flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-slate-900/40 border border-white/5 shadow-inner">
+                            <span class="w-1 h-1 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.4)]"></span>
+                            <span id="customPromptStatus" class="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Saved</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Quick Templates -->
-                <div class="mb-4">
-                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2 block">Quick Templates</label>
+                <div class="mb-5">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-yellow-500/80 text-[10px]"></i> Quick Presets
+                    </label>
                     <div class="grid grid-cols-2 gap-2">
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="british_english">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="british_english">
                             <i class="fa-solid fa-language text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">British English</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">British English</span>
                         </button>
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="emotional_keywords">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="emotional_keywords">
                             <i class="fa-solid fa-heart text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">Emotional</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">Emotional</span>
                         </button>
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="minimalist">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="minimalist">
                             <i class="fa-solid fa-minimize text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">Minimalist</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">Minimalist</span>
                         </button>
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="seo_heavy">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="seo_heavy">
                             <i class="fa-solid fa-chart-line text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">SEO Heavy</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">SEO Heavy</span>
                         </button>
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="brand_guidelines">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="brand_guidelines">
                             <i class="fa-solid fa-building text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">Brand Voice</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">Brand Voice</span>
                         </button>
-                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-800/50 hover:bg-slate-700 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="social_first">
+                        <button class="template-btn group flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/40 hover:bg-slate-800 border border-white/5 hover:border-primary/30 transition-all text-left" data-template="social_first">
                             <i class="fa-solid fa-share-nodes text-[10px] text-slate-500 group-hover:text-primary"></i>
-                            <span class="text-[10px] font-semibold text-slate-300 group-hover:text-white">Social First</span>
+                            <span class="text-[10px] font-bold text-slate-400 group-hover:text-white">Social First</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Input Area -->
-                <div class="relative group/input mb-4">
+                <div class="relative group/input mb-5">
                     <textarea id="customPromptInput" 
-                        class="w-full h-32 bg-slate-900/50 border border-white/10 rounded-xl p-4 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-primary/50 focus:bg-slate-900/80 focus:shadow-[0_0_15px_rgba(96,165,250,0.1)] transition-all resize-none custom-scrollbar leading-relaxed"
+                        class="w-full h-36 bg-slate-900/60 border border-white/10 rounded-2xl p-4 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:border-primary/40 focus:bg-slate-900/90 transition-all resize-none leading-relaxed hide-scrollbar"
                         placeholder="e.g., Always use British English, focus on emotional keywords, keep titles under 80 characters..."
                         maxlength="500"></textarea>
                     
-                    <!-- Character Count -->
-                    <div class="absolute bottom-3 right-3 text-[10px] pointer-events-none transition-colors" id="charCountContainer">
-                        <span id="charCount" class="text-slate-600 group-focus-within/input:text-primary/70">0</span><span class="text-slate-700">/500</span>
+                    <!-- Character Count - Fixed Overlap -->
+                    <div class="absolute -bottom-2 right-2 px-2 py-0.5 rounded-md bg-slate-900 border border-white/10 text-[9px] font-bold shadow-lg z-20 pointer-events-none transition-all group-focus-within/input:border-primary/30" id="charCountContainer">
+                        <span id="charCount" class="text-primary/80">0</span><span class="text-slate-600"> / 500</span>
                     </div>
                 </div>
 
                 <!-- Actions -->
-                <div class="flex justify-between items-center mb-4">
-                    <button id="resetCustomPromptBtn" class="group flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-800/50 hover:bg-red-500/10 border border-white/5 hover:border-red-500/20 transition-all">
+                <div class="flex justify-between items-center mb-5">
+                    <button id="resetCustomPromptBtn" class="group flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800/40 hover:bg-red-500/10 border border-white/5 hover:border-red-500/20 transition-all">
                         <i class="fa-solid fa-rotate-left text-[10px] text-slate-500 group-hover:text-red-400 transition-transform group-hover:-rotate-180"></i>
-                        <span class="text-[10px] font-bold text-slate-500 group-hover:text-red-400 uppercase tracking-wider">Clear</span>
+                        <span class="text-[10px] font-bold text-slate-500 group-hover:text-red-400 uppercase tracking-widest">Clear Strategy</span>
                     </button>
-                    
-                    <div class="flex items-center gap-2 px-2 py-1 rounded-full bg-slate-900/50 border border-white/5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)] animate-pulse"></span>
-                        <span class="text-[9px] font-mono text-slate-400 uppercase tracking-wider">Auto-saved</span>
-                    </div>
                 </div>
 
                 <!-- Info Section -->
@@ -222,8 +225,10 @@ export class CustomPromptManager {
     updateActiveIndicator() {
         if (this.currentPrompt.trim().length > 0) {
             this.activeIndicator.classList.remove('hidden');
+            this.activeIndicator.classList.add('flex');
         } else {
             this.activeIndicator.classList.add('hidden');
+            this.activeIndicator.classList.remove('flex');
         }
     }
 

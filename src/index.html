@@ -4,6 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Generate advanced AI-powered SEO metadata for stock images, including titles, descriptions, keywords, hashtags, alt text, and JSON-LD in one workflow.">
+    <meta name="keywords" content="AI metadata generator, image SEO, stock photo keywords, metadata automation, JSON-LD, alt text generator">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="NOMETA">
+    <meta name="theme-color" content="#0f172a">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AI Image Metadata Generator (2026 Advanced)">
+    <meta property="og:description" content="Generate marketplace-ready metadata for images with AI: SEO title, meta description, keywords, hashtags, alt text, and technical output.">
+    <meta property="og:image" content="Icon/logo-ico.jpg">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Image Metadata Generator (2026 Advanced)">
+    <meta name="twitter:description" content="AI tool for fast, advanced, and SEO-optimized image metadata generation for stock marketplaces.">
+    <meta name="twitter:image" content="Icon/logo-ico.jpg">
     <title>AI Image Metadata Generator (2026 Advanced)</title>
     <link rel="icon" type="image/jpeg" href="Icon/logo-ico.jpg">
     <link rel="stylesheet" href="css/tailwind.generated.css">
@@ -625,6 +639,38 @@
 
                         <!-- Tab: SEO -->
                         <div id="tab-seo" class="tab-content space-y-8 animate-fade-in">
+                            <!-- Metadata Preview -->
+                            <div id="metadataPreviewCard" class="metadata-preview-card hidden">
+                                <div class="metadata-preview-head">
+                                    <div class="metadata-preview-title-wrap">
+                                        <span class="metadata-preview-icon">
+                                            <i class="fa-regular fa-image"></i>
+                                        </span>
+                                        <div>
+                                            <p class="metadata-preview-title">Output Preview</p>
+                                            <p class="metadata-preview-subtitle">Generated metadata file preview image</p>
+                                        </div>
+                                    </div>
+                                    <span id="metadataPreviewFileType" class="metadata-preview-pill">IMAGE</span>
+                                </div>
+                                <div class="metadata-preview-body">
+                                    <div class="metadata-preview-figure">
+                                        <img id="metadataPreviewImage" src="" alt="Generated metadata preview image">
+                                    </div>
+                                    <div class="metadata-preview-info">
+                                        <p id="metadataPreviewFileName" class="metadata-preview-file-name">No file selected</p>
+                                        <p id="metadataPreviewSummary" class="metadata-preview-summary">
+                                            Run metadata generation to see a clean preview with output details.
+                                        </p>
+                                        <div class="metadata-preview-stats">
+                                            <span id="metadataPreviewMime">Format: -</span>
+                                            <span id="metadataPreviewSize">Size: -</span>
+                                            <span id="metadataPreviewKeywordCount">Keywords: 0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- SEO Title -->
                             <div class="group">
                                 <div class="flex justify-between mb-2">
@@ -1016,3 +1062,4 @@
 </body>
 
 </html>
+

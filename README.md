@@ -125,6 +125,8 @@ Saved in browser storage:
 |   `-- Icon/
 |-- scripts/
 |   |-- verify-metadata-tool.mjs
+|   |-- local-host-server.mjs
+|   |-- dev-local.mjs
 |   `-- build-vercel.mjs
 |-- vercel.json
 |-- netlify.toml
@@ -147,13 +149,15 @@ npm install
 
 ### Run in development
 
-Serve the `src` directory with any static server (ES modules require HTTP, not `file://`):
+Start the built-in live development host:
 
 ```bash
-npx http-server src -p 8000
+npm run dev
 ```
 
-Open: `http://localhost:8000`
+Open: `http://localhost:4173`
+
+You can also run the one-click launcher on Windows: `Run-NOMETA-Localhost.bat`
 
 ### Configure API access
 
@@ -174,10 +178,16 @@ Provider key pages:
 
 - `npm run verify`  
   Smoke checks for parser behavior, provider registry storage, and metadata engine routing.
+- `npm run dev`  
+  Watches `src/`, rebuilds `dist/` on changes, and serves `dist/` with live reload. Prefers port `4173` and auto-falls back to the next free port if needed.
+- `npm run dev:host`  
+  Runs a fresh build first, then serves `dist/` (useful when you just want a clean local preview without watch mode). Prefers `4173` and auto-falls back if needed.
 - `npm run build:tailwind`  
   Rebuilds `src/css/tailwind.generated.css`.
 - `npm run build`  
   Builds production output into `dist/` (bundled/minified JS + minified HTML + static assets).
+- `npm run verify:dist`  
+  Rebuilds `dist/` and verifies that hashed CSS/JS references and copied static files are consistent with `src/`.
 - `npm run build:secure`  
   Alias of `npm run build`.
 - `npm run build:obfuscate`  
@@ -190,6 +200,12 @@ This project is ready for static hosting.
 - Vercel config: `vercel.json`
 - Netlify config: `netlify.toml`
 - Additional headers: `_headers`
+
+### Live update behavior (important)
+
+- Local dev (`npm run dev`): file save করলে live reload হয়।
+- Live hosting (Vercel/Netlify): code change reflect করতে deploy লাগবে (usually Git push -> auto deploy)।
+- Browser stale cache avoid করার জন্য hosting cache headers `must-revalidate` করা আছে।
 
 ### Vercel quick setup
 

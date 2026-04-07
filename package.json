@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "dev": "node scripts/dev-local.mjs",
+    "dev:host": "npm run build && node scripts/local-host-server.mjs dist 4173 --live",
     "build:tailwind": "tailwindcss -c tailwind.config.cjs -i src/css/tailwind.css -o src/css/tailwind.generated.css --minify",
     "build": "npm run build:tailwind && node scripts/build-vercel.mjs",
     "build:secure": "npm run build",
     "build:obfuscate": "npm run build:tailwind && node scripts/build-vercel.mjs --obfuscate",
-    "verify": "node scripts/verify-metadata-tool.mjs"
+    "verify": "node scripts/verify-metadata-tool.mjs",
+    "verify:dist": "npm run build && node scripts/verify-dist-sync.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.25.3",

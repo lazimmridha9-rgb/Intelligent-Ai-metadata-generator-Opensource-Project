@@ -90,6 +90,14 @@ const copyAllBtn = document.getElementById('copyAllBtn');
 const downloadEmbeddedCurrentBtn = document.getElementById('downloadEmbeddedCurrentBtn');
 const downloadEmbeddedBtn = document.getElementById('downloadEmbeddedBtn');
 const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+const metadataPreviewCard = document.getElementById('metadataPreviewCard');
+const metadataPreviewImage = document.getElementById('metadataPreviewImage');
+const metadataPreviewFileType = document.getElementById('metadataPreviewFileType');
+const metadataPreviewFileName = document.getElementById('metadataPreviewFileName');
+const metadataPreviewSummary = document.getElementById('metadataPreviewSummary');
+const metadataPreviewMime = document.getElementById('metadataPreviewMime');
+const metadataPreviewSize = document.getElementById('metadataPreviewSize');
+const metadataPreviewKeywordCount = document.getElementById('metadataPreviewKeywordCount');
 const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
 const batchContainer = document.getElementById('batchContainer');
@@ -130,6 +138,7 @@ function init() {
     historyManager = new HistoryManager({
         onLoadItem: (item) => loadHistoryItem(item)
     });
+    clearOutputPreviewCard();
 
     // Restore Marketplace Selection
     const savedMarket = storageGetItem('marketplace_selection') || 'general';
@@ -580,6 +589,7 @@ function handleSingleFile(preparedFile) {
     currentMimeType = preparedFile.mimeType;
     currentFile = preparedFile.file;
     currentImageBase64 = preparedFile.base64;
+    clearOutputPreviewCard();
 
     // Show Preview
     imagePreview.src = `data:${preparedFile.mimeType};base64,${preparedFile.base64}`;
@@ -619,6 +629,57 @@ function getFileExtension(fileName) {
     const ext = fileName?.split('.').pop()?.trim();
     if (!ext || ext === fileName) return 'FILE';
     return ext.toUpperCase();
+}
+
+function clearOutputPreviewCard() {
+    if (!metadataPreviewCard) return;
+
+    metadataPreviewCard.classList.add('hidden');
+
+    if (metadataPreviewImage) metadataPreviewImage.src = '';
+    if (metadataPreviewFileType) metadataPreviewFileType.innerText = 'IMAGE';
+    if (metadataPreviewFileName) metadataPreviewFileName.innerHTML = 'No file selected';
+    if (metadataPreviewSummary) metadataPreviewSummary.innerHTML = 'Run metadata generation to see a clean preview with output details.';
+    if (metadataPreviewMime) metadataPreviewMime.innerHTML = '<i class="fa-solid fa-code mr-1.5 opacity-60"></i> Format: -';
+    if (metadataPreviewSize) metadataPreviewSize.innerHTML = '<i class="fa-solid fa-weight-hanging mr-1.5 opacity-60"></i> Size: -';
+    if (metadataPreviewKeywordCount) metadataPreviewKeywordCount.innerHTML = '<i class="fa-solid fa-tags mr-1.5 opacity-60"></i> Keywords: 0';
+}
+
+function updateOutputPreviewCard(data = {}) {
+    if (!metadataPreviewCard) return;
+
+    const hasImage = Boolean(currentImageBase64 && currentMimeType);
+    if (!hasImage) {
+        clearOutputPreviewCard();
+        return;
+    }
+
+    const safeMime = currentMimeType || currentFile?.type || 'image';
+    const extension = currentFile?.name ? getFileExtension(currentFile.name) : safeMime.replace('image/', '').toUpperCase();
+    const keywords = Array.isArray(data.keywords) ? data.keywords : (Array.isArray(data.tags) ? data.tags : []);
+    const title = (data.title || data.seoTitle || '').toString().trim();
+    const description = (data.description || data.metaDescription || '').toString().trim();
+
+    metadataPreviewCard.classList.remove('hidden');
+    if (metadataPreviewImage) metadataPreviewImage.src = `data:${currentMimeType};base64,${currentImageBase64}`;
+    if (metadataPreviewFileType) metadataPreviewFileType.innerText = extension || 'IMAGE';
+    if (metadataPreviewFileName) {
+        const fileName = currentFile?.name || data.filename || data.suggestedFilename || 'Generated metadata image';
+        metadataPreviewFileName.innerHTML = `<i class="fa-solid fa-file-image text-blue-400/80 mr-1"></i> ${fileName}`;
+    }
+    if (metadataPreviewSummary) {
+        if (title || description) {
+            const titleSnippet = title ? `<span class="text-white font-semibold">Title:</span> ${title}` : '';
+            const descSnippet = description ? `<span class="text-white font-semibold">Description:</span> ${description}` : '';
+            const summaryText = [titleSnippet, descSnippet].filter(Boolean).join(' | ');
+            metadataPreviewSummary.innerHTML = summaryText;
+        } else {
+            metadataPreviewSummary.innerHTML = `<i class="fa-solid fa-circle-info mr-2 opacity-50"></i> Preview synced with your latest generated metadata output.`;
+        }
+    }
+    if (metadataPreviewMime) metadataPreviewMime.innerHTML = `<i class="fa-solid fa-code mr-1.5 opacity-60"></i> Format: <span class="text-white">${(safeMime || '-').toUpperCase()}</span>`;
+    if (metadataPreviewSize) metadataPreviewSize.innerHTML = `<i class="fa-solid fa-weight-hanging mr-1.5 opacity-60"></i> Size: <span class="text-white">${formatFileSize(currentFile?.size || 0)}</span>`;
+    if (metadataPreviewKeywordCount) metadataPreviewKeywordCount.innerHTML = `<i class="fa-solid fa-tags mr-1.5 opacity-60"></i> Keywords: <span class="text-white">${keywords.length}</span>`;
 }
 
 function updateBatchUI() {
@@ -747,6 +808,7 @@ function loadBatchItemResults(index) {
         resultsContent.classList.add('hidden');
         emptyState.classList.remove('hidden');
         analysisStatus.classList.add('hidden');
+        clearOutputPreviewCard();
         updateEmbeddedCurrentDownloadState();
         updateEmbeddedDownloadState();
     }
@@ -774,6 +836,7 @@ function resetApp() {
     document.querySelectorAll('[contenteditable="true"]').forEach(el => el.innerText = '');
     document.getElementById('tagsContainer').innerHTML = '';
     document.getElementById('structuredData').innerText = '';
+    clearOutputPreviewCard();
     const seoHeadSnippet = document.getElementById('seoHeadSnippet');
     if (seoHeadSnippet) seoHeadSnippet.innerText = '';
     const colorPaletteChips = document.getElementById('colorPaletteChips');
@@ -1008,6 +1071,7 @@ function displayResults(data) {
     updateEmbeddedCurrentDownloadState();
     downloadJsonBtn.disabled = false;
     updateEmbeddedDownloadState();
+    updateOutputPreviewCard(data);
 
     // Fill fields - Use new keys with fallbacks
     const title = data.title || data.seoTitle || '';
@@ -1097,7 +1161,7 @@ function displayResults(data) {
                 const kw = (s?.keyword ?? '').toString().trim();
                 const score = (s?.score ?? '').toString().trim();
                 const why = (s?.why ?? '').toString().trim();
-                const line = `${kw}${score ? ` — ${score}/100` : ''}`.trim();
+                const line = `${kw}${score ? ` - ${score}/100` : ''}`.trim();
                 return why ? `${line}\n- ${why}` : line;
             }).join('\n\n')
             : header.trim();
@@ -1395,4 +1459,5 @@ function loadHistoryItem(item) {
 
 // Start Application
 init();
+
 
