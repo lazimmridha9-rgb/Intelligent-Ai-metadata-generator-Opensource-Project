@@ -3,6 +3,9 @@
 :root {
     --primary-glow: 0 0 20px rgba(96, 165, 250, 0.3);
     --accent-glow: 0 0 20px rgba(167, 139, 250, 0.3);
+    --scrollbar-track: rgba(15, 23, 42, 0.72);
+    --scrollbar-thumb: rgba(71, 85, 105, 0.95);
+    --scrollbar-thumb-hover: rgba(96, 165, 250, 0.95);
 }
 
 body {
@@ -12,6 +15,32 @@ body {
         radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%),
         radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
     background-attachment: fixed;
+}
+
+html,
+body {
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--scrollbar-thumb), #334155);
+    border-radius: 999px;
+    border: 2px solid rgba(15, 23, 42, 0.85);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--scrollbar-thumb-hover), #60a5fa);
 }
 
 h1,
@@ -30,17 +59,18 @@ h6 {
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--scrollbar-track);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #334155;
+    background-color: var(--scrollbar-thumb);
     border-radius: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.9);
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: #475569;
-    background-image: linear-gradient(to bottom, #60a5fa, #a78bfa);
+    background-color: var(--scrollbar-thumb-hover);
+    background-image: linear-gradient(to bottom, #60a5fa, #38bdf8);
 }
 
 .hide-scrollbar::-webkit-scrollbar {
@@ -604,34 +634,37 @@ h6 {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
+    flex-wrap: wrap;
+    overflow-x: clip;
+    overflow-y: visible;
     scrollbar-width: thin;
 }
 
 .output-tabs {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
     flex-wrap: nowrap;
     white-space: nowrap;
-    flex-shrink: 0;
+    flex: 1 1 320px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .output-actions {
-    margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 10px;
-    flex-wrap: nowrap;
+    gap: 8px;
+    flex-wrap: wrap;
     justify-content: flex-end;
-    white-space: nowrap;
-    flex-shrink: 0;
+    flex: 1 1 360px;
+    min-width: 0;
 }
 
 .output-action-btn {
     min-height: 34px;
+    min-width: fit-content;
     padding-top: 0.45rem;
     padding-bottom: 0.45rem;
     line-height: 1;
