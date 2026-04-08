@@ -1,110 +1,188 @@
-﻿# :rocket: NOMETA - Intelligent AI Metadata Generator (2026)
+# NOMETA - Intelligent AI Metadata Generator (2026)
 
-<p align="center">
-  <strong>Turn any file into marketplace-ready, SEO-optimized metadata in seconds.</strong><br/>
-  Built for stock creators, designers, marketers, and high-volume content teams.
+<div align="center">
+
+### Turn any image into marketplace-ready metadata with AI
+
+Generate SEO title, description, keyword stack, social copy, alt text, structured data, and embedded metadata files from one workflow.
+
+<p>
+  <img src="https://img.shields.io/github/stars/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge&logo=github" alt="GitHub stars" />
+  <img src="https://img.shields.io/github/forks/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge&logo=github" alt="GitHub forks" />
+  <img src="https://img.shields.io/github/last-commit/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge" alt="Last commit" />
+  <img src="https://img.shields.io/github/issues/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge" alt="Open issues" />
 </p>
 
-<p align="center">
-  <img alt="Platform" src="https://img.shields.io/badge/Platform-Web_App-0f172a?style=for-the-badge&logo=googlechrome&logoColor=white" />
-  <img alt="Language" src="https://img.shields.io/badge/JavaScript-ES_Modules-f7df1e?style=for-the-badge&logo=javascript&logoColor=111" />
-  <img alt="Build" src="https://img.shields.io/badge/Build-esbuild-ffcf00?style=for-the-badge" />
-  <img alt="CSS" src="https://img.shields.io/badge/CSS-Tailwind_3-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=fff" />
-  <img alt="Status" src="https://img.shields.io/badge/Status-Active_Development-16a34a?style=for-the-badge" />
+<p>
+  <img src="https://img.shields.io/badge/Platform-Web%20App-0f172a?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Platform" />
+  <img src="https://img.shields.io/badge/Runtime-Vanilla%20JS-111827?style=for-the-badge&logo=javascript&logoColor=f7df1e" alt="Runtime" />
+  <img src="https://img.shields.io/badge/Build-esbuild-ffcf00?style=for-the-badge" alt="Build" />
+  <img src="https://img.shields.io/badge/CSS-Tailwind%203-38bdf8?style=for-the-badge&logo=tailwindcss&logoColor=fff" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/Desktop-Electron-47848f?style=for-the-badge&logo=electron&logoColor=white" alt="Electron" />
 </p>
 
----
-
-## :sparkles: Why NOMETA?
-
-NOMETA is a **client-side AI metadata studio** that analyzes images and generates high-converting metadata for stock and SEO workflows.
-
-Instead of manually writing titles, descriptions, tags, alt text, and social snippets, NOMETA gives you a **full metadata package** with strategy-level output.
+</div>
 
 ---
 
-## :package: What You Get Per Image
+## Why NOMETA
 
-- :label: SEO title
-- :memo: Meta description
-- :key: Keywords/tags
-- :card_file_box: Suggested category
-- :mega: Social caption + hashtags
-- :wheelchair: Alt text
-- :page_facing_up: JSON-LD structured data
-- :bar_chart: Technical stats + quality insights
-- :art: Color palette and image properties
-- :compass: Strategy object (deep SEO reasoning + ordering plan)
+NOMETA is a client-side AI metadata studio for creators, stock contributors, and SEO teams.
+
+Instead of manually writing image metadata field-by-field, NOMETA generates a complete package with:
+- marketplace-aware metadata strategy
+- editable structured outputs
+- export-ready formats for delivery workflows
 
 ---
 
-## :globe_with_meridians: Marketplace-Aware Modes
+## What It Generates Per Image
 
-NOMETA supports strategy tuning for:
-
-- :earth_africa: General mode
-- :art: Adobe Stock
-- :camera_flash: Shutterstock
-- :camera: iStock
-- :frame_with_picture: Getty Images
-- :clapper: Pond5
-- :jigsaw: Vecteezy
-- :gem: Freepik
-- :thread: Creative Fabrica
-
----
-
-## :electric_plug: AI Providers Supported
-
-- `Google Gemini`
-- `Groq`
-- `OpenRouter`
-
-Provider/model selection is configurable in the UI, and keys/models are stored per provider in browser storage.
+- SEO title
+- Meta description
+- Keyword list (exact target count support)
+- Category suggestion
+- Social caption and hashtags
+- Alt text
+- JSON-LD structured data
+- AI technical stats
+- Advanced strategy object with scoring and ordering plan
+- Local technical analysis: dimensions, quality heuristics, color palette, SEO head snippet
 
 ---
 
-## :zap: Core Capabilities
+## Provider Layer
 
-### 1. Single + Batch Image Processing
-- Upload one image or a full queue
-- Track status per item: `pending / processing / done / error`
-- Retry only failed items
+NOMETA currently supports three active providers in the UI:
+- Google Gemini
+- Groq
+- OpenRouter
 
-### 2. Advanced Prompt Controls
-- :control_knobs: Temperature control (creativity)
-- :racehorse: Speed modes (`1x`, `2x`, `3x`, `4x`)
-- :straight_ruler: Dynamic constraints (title/description/keyword limits)
-- :puzzle_piece: Target keyword chip input
-- :pencil2: Custom prompt manager with persistence
+Built-in model presets include:
+- Gemini 3.1/3 Flash preview series
+- Gemini 2.5 Pro / Flash / Flash-Lite
+- Groq Llama 4 Scout vision
+- OpenRouter presets: GPT-4o, Claude 3.7 Sonnet, Gemini 2.0 Flash, Llama 3.2 Vision
 
-### 3. Smart Export Options
-- `JSON` export (single item)
-- `CSV` export (batch output)
-- Embedded metadata download:
-  - JPG -> APP1 XMP
-  - PNG -> iTXt XMP
-  - SVG -> `<metadata>` block
-  - Unsupported formats can be normalized to PNG for analysis compatibility
-
-### 4. Local-First UX
-- Saves provider key/model config locally
-- Saves marketplace, controls, and custom prompt
-- Keeps recent history for faster repeated workflows
+Note:
+- A `grok` module exists in source for legacy compatibility, but the active provider registry uses `gemini`, `groq`, and `openrouter`.
 
 ---
 
-## :hammer_and_wrench: Tech Stack
+## Marketplace Strategy Modes
 
-- **Frontend:** HTML + Tailwind CSS + custom CSS
-- **Logic:** Vanilla JavaScript (ES Modules)
-- **Build:** esbuild, html-minifier-terser, tailwindcss
-- **Optional hardening:** javascript-obfuscator
-- **Packaging:** JSZip
+NOMETA ships with strategy packs for:
+- General
+- Adobe Stock
+- Shutterstock
+- iStock
+- Getty Images
+- Pond5
+- Vecteezy
+- Freepik
+- Creative Fabrica
+
+Default constraint presets per marketplace:
+
+| Marketplace | Title | Description | Keywords |
+|---|---:|---:|---:|
+| General | 100 | 200 | 40 |
+| Adobe Stock | 70 | 150 | 45 |
+| Shutterstock | 120 | 200 | 50 |
+| iStock | 60 | 250 | 40 |
+| Getty Images | 60 | 250 | 40 |
+| Pond5 | 100 | 300 | 50 |
+| Vecteezy | 80 | 200 | 40 |
+| Freepik | 80 | 200 | 50 |
+| Creative Fabrica | 80 | 200 | 40 |
 
 ---
 
-## :file_folder: Project Structure
+## Core Workflow
+
+1. Choose provider + model + API key.
+2. Select marketplace strategy mode.
+3. Tune generation controls (temperature, speed, constraints, tone, target keywords, custom prompt).
+4. Upload one or many images.
+5. Generate metadata.
+6. Review/edit tabs (SEO, strategy, social, technical).
+7. Export JSON, CSV, or embedded files.
+
+---
+
+## Power Features
+
+### Single + Batch Processing
+- Queue-based multi-file processing
+- Status lifecycle: `pending`, `processing`, `done`, `error`
+- Retry failed batch items only
+- Batch CSV export
+
+### Generation Controls
+- Temperature control (`0.0` to `1.0`)
+- Speed modes (`1x`, `2x`, `3x`, `4x`) with token/delay tuning
+- Advanced constraints:
+  - title length
+  - description length
+  - exact keyword count
+- Target keyword chip input with forced inclusion support
+- Persistent custom prompt manager
+
+### Advanced Output Intelligence
+- Strategy summary and buyer persona hints
+- Keyword clusters and top keyword scoring
+- Title score breakdown (CTR/SEO/clarity/uniqueness)
+- Keyword ordering plan per marketplace intent
+- Compliance notes and checks
+
+### Embedded Metadata Export
+- JPEG: APP1 XMP embed
+- PNG: `iTXt` XMP embed
+- SVG: `<metadata>` block injection
+- Unsupported image types are converted to PNG for compatibility during embed export
+- Batch embedded export as ZIP with optional notes/failure report files
+
+### Local Technical Analysis
+- Image properties (size, dimensions, ratio, transparency)
+- Heuristic quality metrics (sharpness, exposure, contrast, saturation)
+- Color palette extraction
+- Ready-to-copy SEO `<head>` snippet with JSON-LD
+
+---
+
+## Architecture Snapshot
+
+```text
+src/index.html
+   -> src/js/app.js (orchestrator)
+      -> providers/ (Gemini, Groq, OpenRouter)
+      -> metadata-engine + marketplace strategies
+      -> controls (temperature, speed, constraints, prompt)
+      -> technical analyzer
+      -> export/metadata embedder
+      -> history manager + UI utilities
+```
+
+Build pipeline:
+- `tailwindcss` compiles `src/css/tailwind.generated.css`
+- `esbuild` bundles `src/js/app.js`
+- output assets are content-hashed
+- `html-minifier-terser` minifies `dist/index.html`
+- optional obfuscation via `javascript-obfuscator`
+
+---
+
+## Tech Stack
+
+- Frontend: HTML, Tailwind CSS, custom CSS, vanilla JavaScript (ES modules)
+- Build: esbuild, tailwindcss, html-minifier-terser
+- Optional hardening: javascript-obfuscator
+- Packaging: JSZip
+- Desktop wrapper: Electron + electron-builder (Windows NSIS x64)
+
+---
+
+## Project Structure
 
 ```text
 .
@@ -123,30 +201,26 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 |   |   |-- technical/
 |   |   |-- export/
 |   |   |-- custom-prompt/
-|   |   |-- utils/
-|   |   `-- ui/
+|   |   |-- ui/
+|   |   `-- utils/
 |   |-- tag-input/
 |   `-- Icon/
 |-- scripts/
-|   |-- build-vercel.mjs
-|   |-- dev-local.mjs
-|   |-- local-host-server.mjs
-|   |-- verify-dist-sync.mjs
-|   `-- verify-metadata-tool.mjs
+|-- electron/
 |-- dist/
-|-- netlify.toml
 |-- vercel.json
+|-- netlify.toml
 |-- _headers
 `-- README.md
 ```
 
 ---
 
-## :traffic_light: Quick Start
+## Quick Start
 
-### Prerequisites
+### Requirements
 
-- Node.js `18+`
+- Node.js 18+
 - npm
 
 ### Install
@@ -155,19 +229,32 @@ Provider/model selection is configurable in the UI, and keys/models are stored p
 npm install
 ```
 
-### Run Dev Mode
+### Development
 
 ```bash
 npm run dev
 ```
 
-Default local URL:
+Default URL:
 
 ```text
 http://localhost:4173
 ```
 
-Also available for Windows one-click run:
+### Production Build
+
+```bash
+npm run build
+```
+
+### Verify
+
+```bash
+npm run verify
+npm run verify:dist
+```
+
+### Windows Local Shortcut
 
 ```text
 Run-NOMETA-Localhost.bat
@@ -175,97 +262,88 @@ Run-NOMETA-Localhost.bat
 
 ---
 
-## :lock: API Key Setup
+## NPM Scripts
+
+| Script | Purpose |
+|---|---|
+| `npm run dev` | Watch `src`, rebuild `dist`, serve local host with live reload |
+| `npm run dev:host` | Build once and host `dist` |
+| `npm run build:tailwind` | Rebuild Tailwind output CSS |
+| `npm run build` | Production build to `dist` |
+| `npm run build:secure` | Alias of build |
+| `npm run build:obfuscate` | Build with JS obfuscation |
+| `npm run verify` | Parser/provider/engine smoke checks |
+| `npm run verify:dist` | Build + dist synchronization checks |
+| `npm run electron:start` | Build then launch Electron app |
+| `npm run dist:win` | Build Windows NSIS installer package |
+
+---
+
+## API Key Setup
 
 Inside the app:
-
-1. Select provider (`Gemini`, `Groq`, or `OpenRouter`)
+1. Select provider
 2. Paste API key
-3. Choose model
-4. Click save
+3. Pick model
+4. Save configuration
 
-Key portals:
-
+Provider key portals:
 - Gemini: https://aistudio.google.com/apikey
 - Groq: https://console.groq.com/keys
 - OpenRouter: https://openrouter.ai/keys
 
 ---
 
-## :scroll: npm Scripts
+## Deployment
 
-| Script | Purpose |
-|---|---|
-| `npm run dev` | Full dev pipeline: watch `src`, rebuild `dist`, serve with live reload |
-| `npm run dev:host` | Build once, then host `dist` |
-| `npm run build:tailwind` | Regenerate `src/css/tailwind.generated.css` |
-| `npm run build` | Production build to `dist` |
-| `npm run build:secure` | Alias of `build` |
-| `npm run build:obfuscate` | Build with optional JS obfuscation |
-| `npm run verify` | Smoke checks for metadata engine and registry behavior |
-| `npm run verify:dist` | Rebuild + verify `dist` sync integrity |
+Static-host ready with first-party configs included:
+- `vercel.json`
+- `netlify.toml`
+- `_headers`
 
----
+Security headers include CSP, frame restrictions, referrer policy, and permissions policy.
 
-## :globe_with_meridians: Deployment
-
-This project is static-host ready.
-
-- Vercel config: `vercel.json`
-- Netlify config: `netlify.toml`
-- Cache/header rules: `_headers`
-
-### Vercel Setup
-
-1. Import repository
-2. Framework preset: `Other`
-3. Build command: `npm run build`
-4. Output directory: `dist`
-5. Deploy
-
-### Cache & Update Behavior
-
-- Local dev reflects changes instantly via live reload
-- Hosted environments require a new deployment for code changes
-- Cache policies are tuned to reduce stale frontend artifacts
+Important runtime note:
+- This is a client-side app, so provider calls happen from the browser.
 
 ---
 
-## :shield: Security Notes
+## Security and Data Notes
 
-- This is a **frontend/client-side** app
-- API keys are stored in browser storage for the current user
-- Client-delivered frontend code is inspectable by end users
-- For stronger secret protection, route provider calls through your backend
+- API keys are stored client-side (local storage via safe storage utility)
+- If browser local storage is unavailable, app falls back to in-memory storage
+- History keeps up to 5 recent items, with safeguards for storage size limits
+- For strict secret protection, use your own backend proxy
 
 ---
 
-## :handshake: Contributing
+## Troubleshooting
 
-1. Fork the repo
-2. Create a feature branch
-3. Commit your changes
-4. Push branch
+- If output JSON fails to parse, providers include auto-repair retry logic for malformed responses
+- If model does not support vision (especially on OpenRouter), choose a vision-capable model preset
+- If embedded export fails for unusual formats, the app falls back to conversion-based compatibility paths
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a branch
+3. Make your changes
+4. Push your branch
 5. Open a pull request
 
 ---
 
-## :pushpin: Implementation Notes
+## License
 
-- Debug mode:
-  - URL: `?debug=1`
-  - Local storage key: `metadata_debug_mode = '1'`
-- A legacy `grok` module may exist in source, but active provider flow uses `gemini`, `groq`, and `openrouter`.
+A `LICENSE` file is not currently present in this repository.
+Add one to define official open-source usage terms.
 
 ---
 
-## :page_with_curl: License
+<div align="center">
 
-A `LICENSE` file is not currently included in this repository.
-Add one to define explicit open-source usage terms.
+Built for creators who want faster workflows and stronger metadata quality.
 
----
-
-<p align="center">
-  Made with :heart: for creators who want speed, clarity, and better rankings.
-</p>
+</div>
