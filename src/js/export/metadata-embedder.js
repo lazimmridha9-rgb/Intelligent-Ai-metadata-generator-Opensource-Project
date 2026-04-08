@@ -291,6 +291,26 @@ async function convertFileToPngBlob(file) {
     return blob;
 }
 
+async function convertFileToJpegBlob(file) {
+    const img = await fileToImageElement(file);
+    const canvas = document.createElement('canvas');
+    canvas.width = img.naturalWidth || img.width || 1;
+    canvas.height = img.naturalHeight || img.height || 1;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas context unavailable.');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+
+    const blob = await new Promise((resolve, reject) => {
+        canvas.toBlob((b) => {
+            if (!b) reject(new Error('JPEG conversion failed.'));
+            else resolve(b);
+        }, 'image/jpeg', 0.92);
+    });
+    return blob;
+}
+
 function embedXmpIntoSvgText(svgText, xmpPacket) {
     const metadataBlock = `<metadata id="ai-metadata"><![CDATA[${xmpPacket}]]></metadata>`;
     if (/<metadata[\s>]/i.test(svgText)) {
@@ -312,9 +332,26 @@ function buildOutputName(file, metadata, extOverride = null) {
 }
 
 async function embedIntoPngBlob(file, metadata, xmpPacket) {
-    const sourceBlob = file.type === 'image/png' ? file : await convertFileToPngBlob(file);
-    const input = new Uint8Array(await sourceBlob.arrayBuffer());
-    const embedded = embedXmpIntoPngBytes(input, xmpPacket);
+    let sourceBlob = file;
+    let input = new Uint8Array(await sourceBlob.arrayBuffer());
+
+    // Some files are mislabeled as PNG even when bytes are not PNG.
+    // Fallback to canvas conversion to guarantee valid PNG bytes.
+    if (!ensurePngSignature(input)) {
+        sourceBlob = await convertFileToPngBlob(file);
+        input = new Uint8Array(await sourceBlob.arrayBuffer());
+    }
+
+    let embedded;
+    try {
+        embedded = embedXmpIntoPngBytes(input, xmpPacket);
+    } catch {
+        // Some PNG variants may decode fine in browser but break strict chunk parsing.
+        // Re-encode through canvas and retry once.
+        sourceBlob = await convertFileToPngBlob(file);
+        input = new Uint8Array(await sourceBlob.arrayBuffer());
+        embedded = embedXmpIntoPngBytes(input, xmpPacket);
+    }
     return {
         blob: new Blob([embedded], { type: 'image/png' }),
         mimeType: 'image/png',
@@ -323,8 +360,24 @@ async function embedIntoPngBlob(file, metadata, xmpPacket) {
 }
 
 async function embedIntoJpegBlob(file, metadata, xmpPacket) {
-    const input = new Uint8Array(await file.arrayBuffer());
-    const embedded = embedXmpIntoJpegBytes(input, xmpPacket);
+    let sourceBlob = file;
+    let input = new Uint8Array(await sourceBlob.arrayBuffer());
+
+    // Some files are mislabeled as JPEG even when bytes are not JPEG.
+    // Fallback to canvas conversion to guarantee valid JPEG bytes.
+    if (!isJpeg(input)) {
+        sourceBlob = await convertFileToJpegBlob(file);
+        input = new Uint8Array(await sourceBlob.arrayBuffer());
+    }
+
+    let embedded;
+    try {
+        embedded = embedXmpIntoJpegBytes(input, xmpPacket);
+    } catch {
+        sourceBlob = await convertFileToJpegBlob(file);
+        input = new Uint8Array(await sourceBlob.arrayBuffer());
+        embedded = embedXmpIntoJpegBytes(input, xmpPacket);
+    }
     return {
         blob: new Blob([embedded], { type: 'image/jpeg' }),
         mimeType: 'image/jpeg',

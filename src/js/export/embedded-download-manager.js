@@ -26,6 +26,29 @@ function buildZipName() {
     return `embedded-metadata-batch-${ts}.zip`;
 }
 
+function buildUniqueZipEntryName(name, usedNames) {
+    const safe = sanitizeName(name, 'embedded-image');
+    if (!usedNames.has(safe)) {
+        usedNames.add(safe);
+        return safe;
+    }
+
+    const dot = safe.lastIndexOf('.');
+    const hasExt = dot > 0;
+    const base = hasExt ? safe.slice(0, dot) : safe;
+    const ext = hasExt ? safe.slice(dot) : '';
+
+    let counter = 2;
+    while (true) {
+        const candidate = `${base}-${counter}${ext}`;
+        if (!usedNames.has(candidate)) {
+            usedNames.add(candidate);
+            return candidate;
+        }
+        counter += 1;
+    }
+}
+
 export class EmbeddedDownloadManager {
     constructor({ showToast, showErrorModal }) {
         this.showToast = typeof showToast === 'function' ? showToast : () => {};
@@ -82,21 +105,42 @@ export class EmbeddedDownloadManager {
     async _downloadBatchZip(items) {
         const zip = new JSZip();
         const notes = [];
+        const failures = [];
+        const usedNames = new Set();
+        let successCount = 0;
 
         for (const item of items) {
-            const output = await embedMetadataIntoFile(item.file, item.metadata);
-            zip.file(sanitizeName(output.fileName, item.file?.name || 'embedded-image'), output.blob);
-            if (output.note) {
-                notes.push(`${item.file?.name || 'file'} -> ${output.note}`);
+            try {
+                const output = await embedMetadataIntoFile(item.file, item.metadata);
+                const outputName = buildUniqueZipEntryName(output.fileName || item.file?.name || 'embedded-image', usedNames);
+                zip.file(outputName, output.blob);
+                successCount += 1;
+                if (output.note) {
+                    notes.push(`${item.file?.name || 'file'} -> ${output.note}`);
+                }
+            } catch (error) {
+                const message = error?.message || 'Unknown embed error';
+                failures.push(`${item.file?.name || 'file'} -> ${message}`);
             }
+        }
+
+        if (successCount === 0) {
+            throw new Error('Could not embed metadata into any batch file.');
         }
 
         if (notes.length) {
             zip.file('embedding-notes.txt', notes.join('\n'));
         }
+        if (failures.length) {
+            zip.file('failed-embeds.txt', failures.join('\n'));
+        }
 
         const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
         triggerBlobDownload(zipBlob, buildZipName());
-        this.showToast('Batch ZIP with embedded metadata is ready.', 'success');
+        if (failures.length) {
+            this.showToast(`Batch ZIP ready (${successCount}/${items.length} embedded). Check failed-embeds.txt for issues.`, 'error');
+        } else {
+            this.showToast('Batch ZIP with embedded metadata is ready.', 'success');
+        }
     }
 }
