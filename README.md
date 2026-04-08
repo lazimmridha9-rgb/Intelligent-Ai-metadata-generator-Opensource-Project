@@ -1,8 +1,8 @@
-# NOMETA - Intelligent AI Metadata Generator (2026)
+# 🚀 NOMETA - Intelligent AI Metadata Generator (2026)
 
 <div align="center">
 
-### Turn any image into marketplace-ready metadata with AI
+### ⚡ Turn any image into marketplace-ready metadata with AI
 
 Generate SEO title, description, keyword stack, social copy, alt text, structured data, and embedded metadata files from one workflow.
 
@@ -25,7 +25,7 @@ Generate SEO title, description, keyword stack, social copy, alt text, structure
 
 ---
 
-## Why NOMETA
+## ✨ Why NOMETA
 
 NOMETA is a client-side AI metadata studio for creators, stock contributors, and SEO teams.
 
@@ -36,22 +36,22 @@ Instead of manually writing image metadata field-by-field, NOMETA generates a co
 
 ---
 
-## What It Generates Per Image
+## 📦 What It Generates Per Image
 
-- SEO title
-- Meta description
-- Keyword list (exact target count support)
-- Category suggestion
-- Social caption and hashtags
-- Alt text
-- JSON-LD structured data
-- AI technical stats
-- Advanced strategy object with scoring and ordering plan
-- Local technical analysis: dimensions, quality heuristics, color palette, SEO head snippet
+- 🏷️ SEO title
+- 📝 Meta description
+- 🔑 Keyword list (exact target count support)
+- 🗂️ Category suggestion
+- 📣 Social caption and hashtags
+- ♿ Alt text
+- 🧩 JSON-LD structured data
+- 📊 AI technical stats
+- 🧠 Advanced strategy object with scoring and ordering plan
+- 🎨 Local technical analysis: dimensions, quality heuristics, color palette, SEO head snippet
 
 ---
 
-## Provider Layer
+## 🔌 Provider Layer
 
 NOMETA currently supports three active providers in the UI:
 - Google Gemini
@@ -69,7 +69,7 @@ Note:
 
 ---
 
-## Marketplace Strategy Modes
+## 🌍 Marketplace Strategy Modes
 
 NOMETA ships with strategy packs for:
 - General
@@ -98,7 +98,7 @@ Default constraint presets per marketplace:
 
 ---
 
-## Core Workflow
+## 🧭 Core Workflow
 
 1. Choose provider + model + API key.
 2. Select marketplace strategy mode.
@@ -110,15 +110,15 @@ Default constraint presets per marketplace:
 
 ---
 
-## Power Features
+## 🔥 Power Features
 
-### Single + Batch Processing
+### 📁 Single + Batch Processing
 - Queue-based multi-file processing
 - Status lifecycle: `pending`, `processing`, `done`, `error`
 - Retry failed batch items only
 - Batch CSV export
 
-### Generation Controls
+### 🎛️ Generation Controls
 - Temperature control (`0.0` to `1.0`)
 - Speed modes (`1x`, `2x`, `3x`, `4x`) with token/delay tuning
 - Advanced constraints:
@@ -128,21 +128,21 @@ Default constraint presets per marketplace:
 - Target keyword chip input with forced inclusion support
 - Persistent custom prompt manager
 
-### Advanced Output Intelligence
+### 🧠 Advanced Output Intelligence
 - Strategy summary and buyer persona hints
 - Keyword clusters and top keyword scoring
 - Title score breakdown (CTR/SEO/clarity/uniqueness)
 - Keyword ordering plan per marketplace intent
 - Compliance notes and checks
 
-### Embedded Metadata Export
+### 📥 Embedded Metadata Export
 - JPEG: APP1 XMP embed
 - PNG: `iTXt` XMP embed
 - SVG: `<metadata>` block injection
 - Unsupported image types are converted to PNG for compatibility during embed export
 - Batch embedded export as ZIP with optional notes/failure report files
 
-### Local Technical Analysis
+### 🔬 Local Technical Analysis
 - Image properties (size, dimensions, ratio, transparency)
 - Heuristic quality metrics (sharpness, exposure, contrast, saturation)
 - Color palette extraction
@@ -150,7 +150,7 @@ Default constraint presets per marketplace:
 
 ---
 
-## Architecture Snapshot
+## 🏗️ Architecture Snapshot
 
 ```text
 src/index.html
@@ -164,15 +164,15 @@ src/index.html
 ```
 
 Build pipeline:
-- `tailwindcss` compiles `src/css/tailwind.generated.css`
-- `esbuild` bundles `src/js/app.js`
-- output assets are content-hashed
-- `html-minifier-terser` minifies `dist/index.html`
-- optional obfuscation via `javascript-obfuscator`
+- ⚙️ `tailwindcss` compiles `src/css/tailwind.generated.css`
+- 📦 `esbuild` bundles `src/js/app.js`
+- 🧾 output assets are content-hashed
+- 🧹 `html-minifier-terser` minifies `dist/index.html`
+- 🛡️ optional obfuscation via `javascript-obfuscator`
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - Frontend: HTML, Tailwind CSS, custom CSS, vanilla JavaScript (ES modules)
 - Build: esbuild, tailwindcss, html-minifier-terser
@@ -182,7 +182,7 @@ Build pipeline:
 
 ---
 
-## Project Structure
+## 🗂️ Project Structure
 
 ```text
 .
@@ -216,20 +216,20 @@ Build pipeline:
 
 ---
 
-## Quick Start
+## 🚦 Quick Start
 
-### Requirements
+### 📌 Requirements
 
 - Node.js 18+
 - npm
 
-### Install
+### 📥 Install
 
 ```bash
 npm install
 ```
 
-### Development
+### 🧪 Development
 
 ```bash
 npm run dev
@@ -241,20 +241,20 @@ Default URL:
 http://localhost:4173
 ```
 
-### Production Build
+### 🏭 Production Build
 
 ```bash
 npm run build
 ```
 
-### Verify
+### ✅ Verify
 
 ```bash
 npm run verify
 npm run verify:dist
 ```
 
-### Windows Local Shortcut
+### 🪟 Windows Local Shortcut
 
 ```text
 Run-NOMETA-Localhost.bat
@@ -262,7 +262,7 @@ Run-NOMETA-Localhost.bat
 
 ---
 
-## NPM Scripts
+## 📜 NPM Scripts
 
 | Script | Purpose |
 |---|---|
@@ -279,7 +279,7 @@ Run-NOMETA-Localhost.bat
 
 ---
 
-## API Key Setup
+## 🔐 API Key Setup
 
 Inside the app:
 1. Select provider
@@ -294,7 +294,7 @@ Provider key portals:
 
 ---
 
-## Deployment
+## 🌐 Deployment
 
 Static-host ready with first-party configs included:
 - `vercel.json`
@@ -308,7 +308,7 @@ Important runtime note:
 
 ---
 
-## Security and Data Notes
+## 🛡️ Security and Data Notes
 
 - API keys are stored client-side (local storage via safe storage utility)
 - If browser local storage is unavailable, app falls back to in-memory storage
@@ -317,7 +317,7 @@ Important runtime note:
 
 ---
 
-## Troubleshooting
+## 🧰 Troubleshooting
 
 - If output JSON fails to parse, providers include auto-repair retry logic for malformed responses
 - If model does not support vision (especially on OpenRouter), choose a vision-capable model preset
@@ -325,7 +325,7 @@ Important runtime note:
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a branch
@@ -335,7 +335,7 @@ Important runtime note:
 
 ---
 
-## License
+## 📄 License
 
 A `LICENSE` file is not currently present in this repository.
 Add one to define official open-source usage terms.
