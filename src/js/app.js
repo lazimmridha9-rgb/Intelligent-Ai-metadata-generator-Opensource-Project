@@ -166,7 +166,7 @@ function updateMarketplaceSelection(market) {
 
     // Advanced Constraints Update
     if (engine.currentStrategy && engine.currentStrategy.getDefaults) {
-        metadataAdj.setDefaults(engine.currentStrategy.getDefaults());
+        metadataAdj.setDefaults(engine.currentStrategy.getDefaults(), market);
     }
 
     // Persist
@@ -1468,5 +1468,4 @@ function loadHistoryItem(item) {
 
 // Start Application
 init();
-
 

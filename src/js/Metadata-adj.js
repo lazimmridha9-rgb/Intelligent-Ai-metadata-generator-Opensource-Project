@@ -14,8 +14,11 @@ export class MetadataAdj {
             keywordsCount: 40
         };
 
+        this.storageKey = 'metadata_adj_settings_by_market';
+        this.currentMarket = (storageGetItem('marketplace_selection') || 'general').toString().trim() || 'general';
+
         // Current Values
-        this.settings = this.loadSettings();
+        this.settings = this.getSettingsForMarket(this.currentMarket);
 
         // DOM Elements
         this.container = null;
@@ -188,10 +191,53 @@ export class MetadataAdj {
     }
 
     /**
+     * Loads marketplace settings map from localStorage
+     * shape: { [marketId]: { titleLength, descLength, keywordsCount } }
+     */
+    loadSettingsMap() {
+        const raw = storageGetItem(this.storageKey);
+        if (raw) {
+            try {
+                const parsed = JSON.parse(raw);
+                if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                    return parsed;
+                }
+            } catch (e) {
+                console.error('Failed to parse metadata settings map', e);
+            }
+        }
+
+        // Backward compatibility: migrate old single settings key once.
+        const legacy = this.loadSettings();
+        if (legacy && typeof legacy === 'object') {
+            const migrated = { [this.currentMarket]: { ...this.defaults, ...legacy } };
+            storageSetItem(this.storageKey, JSON.stringify(migrated));
+            return migrated;
+        }
+
+        return {};
+    }
+
+    /**
+     * Returns saved settings for a specific marketplace (or defaults if none)
+     */
+    getSettingsForMarket(market) {
+        const marketId = (market || 'general').toString().trim() || 'general';
+        const settingsMap = this.loadSettingsMap();
+        const savedForMarket = settingsMap[marketId];
+        if (savedForMarket && typeof savedForMarket === 'object') {
+            return { ...this.defaults, ...savedForMarket };
+        }
+        return { ...this.defaults };
+    }
+
+    /**
      * Saves current settings to localStorage
      */
     saveSettings() {
-        storageSetItem('metadata_adj_settings', JSON.stringify(this.settings));
+        const settingsMap = this.loadSettingsMap();
+        settingsMap[this.currentMarket] = { ...this.defaults, ...this.settings };
+        storageSetItem(this.storageKey, JSON.stringify(settingsMap));
     }
 
     /**
@@ -205,14 +251,17 @@ export class MetadataAdj {
      * Updates the default values based on the selected marketplace
      * @param {Object} newDefaults - The new default values
      */
-    setDefaults(newDefaults) {
+    setDefaults(newDefaults, market = 'general') {
         if (!newDefaults) return;
         
+        this.currentMarket = (market || 'general').toString().trim() || 'general';
+
         // Update defaults
         this.defaults = { ...this.defaults, ...newDefaults };
-        
-        // Keep user's active settings; only backfill missing fields from defaults
-        this.settings = { ...this.defaults, ...this.settings };
+
+        // Restore saved settings for this marketplace if present,
+        // otherwise use marketplace defaults.
+        this.settings = this.getSettingsForMarket(this.currentMarket);
         
         // Update UI
         if (this.container) {
@@ -225,13 +274,11 @@ export class MetadataAdj {
             if (kwSlider) kwSlider.value = this.settings.keywordsCount;
 
             this.updateDisplays();
-            
-            // We do NOT save to localStorage here to avoid overwriting user's global preference 
-            // with temporary marketplace defaults if they switch back and forth. 
-            // Or maybe we should? Let's save it so it persists if they reload.
-            this.saveSettings();
         }
+
+        // Persist active marketplace defaults so refresh keeps selected market preset.
+        this.saveSettings();
         
-        console.log('MetadataAdj: Defaults updated for new marketplace', this.defaults);
+        console.log(`MetadataAdj: Applied settings for marketplace "${this.currentMarket}"`, this.settings);
     }
 }
