@@ -7,6 +7,10 @@
 Generate SEO title, description, keyword stack, social copy, alt text, structured data, and embedded metadata files from one workflow.
 
 <p>
+  <img src="https://res.cloudinary.com/dllfxrcz2/image/upload/f_auto,q_auto/45254554_carhlf" alt="NOMETA advertising preview - clean and professional metadata generator interface" width="1100" />
+</p>
+
+<p>
   <img src="https://img.shields.io/github/stars/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge&logo=github" alt="GitHub stars" />
   <img src="https://img.shields.io/github/forks/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge&logo=github" alt="GitHub forks" />
   <img src="https://img.shields.io/github/last-commit/lazimmridha9-rgb/Intelligent-Ai-metadata-generator-Opensource-Project?style=for-the-badge" alt="Last commit" />
